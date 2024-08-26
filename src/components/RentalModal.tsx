@@ -31,16 +31,22 @@ const RentalModal: React.FC<RentalModalProps> = ({ isOpen, onClose }) => {
     },
   });
 
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const onModalClose = () => {
+    setShowConfirm(true);
+  };
+
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      setShowConfirm(true);
     }
   };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        onClose();
+        setShowConfirm(true);
       }
     };
 
@@ -48,9 +54,9 @@ const RentalModal: React.FC<RentalModalProps> = ({ isOpen, onClose }) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose]);
+  }, []);
 
-  if (!isOpen) return null;
+  if (!isOpen && !showConfirm) return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = e.target;
@@ -77,6 +83,19 @@ const RentalModal: React.FC<RentalModalProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const handleConfirmClose = (action: "save" | "discard" | "cancel") => {
+    if (action === "save") {
+      const formEvent = new Event("submit", {
+        cancelable: true,
+      }) as unknown as React.FormEvent;
+      handleSubmit(formEvent);
+    } else if (action === "discard") {
+      onClose();
+    } else if (action === "cancel") {
+      setShowConfirm(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -86,7 +105,7 @@ const RentalModal: React.FC<RentalModalProps> = ({ isOpen, onClose }) => {
       <div className="custom-modal">
         <div className="modal-header">
           <h2>КАРТОЧКА АРЕНДЫ</h2>
-          <button onClick={onClose} className="close-button">
+          <button onClick={onModalClose} className="close-button">
             &times;
           </button>
         </div>
@@ -304,6 +323,21 @@ const RentalModal: React.FC<RentalModalProps> = ({ isOpen, onClose }) => {
           </div>
         </form>
       </div>
+      {showConfirm && (
+        <div className="confirm-overlay">
+          <div className="confirm-modal">
+            <h3>Есть несохраненные изменения</h3>
+            <p>Вы хотите сохранить изменения?</p>
+            <button className="btn" onClick={() => handleConfirmClose("save")}>
+              Сохранить
+            </button>
+            <button className="btn" onClick={() => handleConfirmClose("discard")}>
+              Выйти без сохранения
+            </button>
+            <button className="btn" onClick={() => handleConfirmClose("cancel")}>Отмена</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

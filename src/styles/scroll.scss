@@ -10,7 +10,7 @@
 /* Кастомный скроллбар для WebKit-браузеров */
 .calendar-container::-webkit-scrollbar,
 .custom-modal::-webkit-scrollbar {
-    width: 12px; /* Ширина вертикального скроллбара */
+    width: 8px; /* Ширина вертикального скроллбара */
     height: 8px; /* Высота горизонтального скроллбара */
 }
 
