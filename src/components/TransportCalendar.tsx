@@ -6,7 +6,7 @@ import {
   getMinMaxDates,
   calculateColSpan,
 } from "../utils/dateUtils";
-import { ReactMouseSelect } from "react-mouse-select";
+import { ReactMouseSelect, TFinishSelectionCallback } from "react-mouse-select";
 
 interface Booking {
   id: string;
@@ -45,13 +45,35 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
 
   const [selectedRange, setSelectedRange] = useState<string[]>([]);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [initialRow, setInitialRow] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleFinishSelection = (items: Element[], e: MouseEvent) => {
+  const handleFinishSelection: TFinishSelectionCallback = (items, e) => {
     const selectedDates = items.map(
-      (item) => dates[parseInt(item.getAttribute("data-id") || "", 10)]
+      (item) => dates[parseInt(item.getAttribute("data-id") || "")]
     );
     setSelectedRange(selectedDates);
+
+    console.log(new Set(selectedDates));
+    console.log(items[0]);
+
+    const startRow = items.length
+      ? parseInt(items[0].getAttribute("data-row") || "")
+      : null;
+
+    console.log(startRow);
+
+    if (startRow !== null) {
+      setInitialRow(startRow);
+      const transportName = bookingMatrix[startRow]?.transportName;
+      console.log("Transport Name:", transportName);
+
+      const bookingsInRow = groupedBookings[transportName || ""] || [];
+      console.log("Bookings in Row:", bookingsInRow);
+
+      console.log("Found Booking:", bookingsInRow[0]);
+      setSelectedBooking(bookingsInRow[0] || null);
+    }
   };
 
   const createBookingMatrix = () => {
@@ -142,8 +164,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
               <td className="cell">
                 <button
                   className="btn"
-                  onClick={() => alert("Редирект на форму")}
-                >
+                  onClick={() => alert("Редирект на форму")}>
                   Добавить машину
                 </button>
               </td>
@@ -169,6 +190,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
         <RentalModal
           isOpen={!!selectedBooking}
           onClose={() => setSelectedBooking(null)}
+          booking={selectedBooking}
         />
       )}
     </>

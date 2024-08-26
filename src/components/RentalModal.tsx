@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 interface RentalModalProps {
   isOpen: boolean;
   onClose: () => void;
+  booking: any;
 }
 
-const RentalModal: React.FC<RentalModalProps> = ({ isOpen, onClose }) => {
+const RentalModal: React.FC<RentalModalProps> = ({ isOpen, onClose, booking }) => {
   const [formData, setFormData] = useState({
     pickupDate: "",
     returnDate: "",
@@ -105,6 +106,7 @@ const RentalModal: React.FC<RentalModalProps> = ({ isOpen, onClose }) => {
       <div className="custom-modal">
         <div className="modal-header">
           <h2>КАРТОЧКА АРЕНДЫ</h2>
+          <h3>{booking.transportName}</h3>
           <button onClick={onModalClose} className="close-button">
             &times;
           </button>
