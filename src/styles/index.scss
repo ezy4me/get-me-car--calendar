@@ -1,0 +1,60 @@
+@import "./booking-cell.scss";
+@import "./trasport-calendar.scss";
+
+* {
+    font:
+        16px "Inter",
+        sans-serif;
+    box-sizing: border-box;
+}
+
+.calendar-wrapper {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.container {
+    min-height: calc(100vh - 40px);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: auto;
+    border-radius: 8px;
+}
+
+/* Контейнер для кастомного скролла */
+.container {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px; 
+    overflow: auto; /* Измените на auto для появления скроллбара */
+    width: 100%;
+}
+
+/* Кастомный скроллбар для WebKit-браузеров */
+.container::-webkit-scrollbar {
+    width: 12px; /* Ширина вертикального скроллбара */
+    height: 8px; /* Ширина вертикального скроллбара */
+}
+
+.container::-webkit-scrollbar-track {
+    background: #e9e9e9; /* Цвет фона трека */
+    border-radius: 8px;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background: #429CF3; /* Цвет ползунка скроллбара */
+    border-radius: 8px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Цвет ползунка при наведении */
+}
+
+.container::-webkit-scrollbar-horizontal {
+    height: 8px; /* Высота горизонтального скроллбара */
+}
