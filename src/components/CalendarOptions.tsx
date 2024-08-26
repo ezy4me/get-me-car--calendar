@@ -114,49 +114,56 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
           />
           {isDropdownOpen && (
             <div className="dropdown-menu">
-              <Select
-                styles={customStyles}
-                value={selectedClassSort}
-                onChange={handleSortChange("class")}
-                options={sortOptions.filter((option) => option.value === "class")}
-                placeholder="Сортировать по классу"
-                isClearable
-              />
-              <Select
-                styles={customStyles}
-                value={selectedTypeSort}
-                onChange={handleSortChange("type")}
-                options={sortOptions.filter((option) => option.value === "type")}
-                placeholder="Сортировать по типу"
-                isClearable
-              />
-              <Select
-                styles={customStyles}
-                value={selectedIdSort}
-                onChange={handleSortChange("id")}
-                options={sortOptions.filter((option) => option.value === "id")}
-                placeholder="Сортировать по идентификатору"
-                isClearable
-              />
-              <Select
-                styles={customStyles}
-                value={selectedNearestBookingSort}
-                onChange={handleSortChange("nearestBooking")}
-                options={sortOptions.filter(
-                  (option) => option.value === "nearestBooking"
-                )}
-                placeholder="Сортировать по ближайшему бронированию"
-                isClearable
-              />
-
-              <Select
-                styles={customStyles}
-                value={selectedFilter}
-                onChange={handleFilterChange}
-                options={filterOptions}
-                placeholder="Фильтровать по"
-                isClearable
-              />
+              <div className="dropdown-menu-list">
+                <Select
+                  styles={customStyles}
+                  value={selectedFilter}
+                  onChange={handleFilterChange}
+                  options={filterOptions}
+                  placeholder="Статус ТС"
+                  isClearable
+                />
+                <Select
+                  styles={customStyles}
+                  value={selectedClassSort}
+                  onChange={handleSortChange("class")}
+                  options={sortOptions.filter(
+                    (option) => option.value === "class"
+                  )}
+                  placeholder="Класс ТС"
+                  isClearable
+                />
+                <Select
+                  styles={customStyles}
+                  value={selectedTypeSort}
+                  onChange={handleSortChange("type")}
+                  options={sortOptions.filter(
+                    (option) => option.value === "type"
+                  )}
+                  placeholder="Тип ТС"
+                  isClearable
+                />
+                <Select
+                  styles={customStyles}
+                  value={selectedIdSort}
+                  onChange={handleSortChange("id")}
+                  options={sortOptions.filter(
+                    (option) => option.value === "id"
+                  )}
+                  placeholder="ID ТС"
+                  isClearable
+                />
+                <Select
+                  styles={customStyles}
+                  value={selectedNearestBookingSort}
+                  onChange={handleSortChange("nearestBooking")}
+                  options={sortOptions.filter(
+                    (option) => option.value === "nearestBooking"
+                  )}
+                  placeholder="Бронирование"
+                  isClearable
+                />
+              </div>
             </div>
           )}
         </div>

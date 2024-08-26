@@ -27,8 +27,15 @@
     padding-left: 36px;
     font-size: 16px;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     width: 100%;
+
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        border-color: #0077ff;
+        outline: none;
+    }
 }
 
 .icon-dropdown {
@@ -48,7 +55,7 @@
 
 .dropdown-menu {
     position: absolute;
-    top: 100%;
+    top: 160%;
     right: 0;
     background: white;
     border: 1px solid #ddd;
