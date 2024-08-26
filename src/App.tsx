@@ -1,3 +1,5 @@
+import { useState } from "react";
+import CalendarOptions from "./components/CalendarOptions";
 import TransportCalendar from "./components/TransportCalendar";
 // Данные бронирований
 const data = [
@@ -69,8 +71,25 @@ const data = [
 ];
 
 function App() {
+  const [sortBy, setSortBy] = useState<string>("");
+  const [filterBy, setFilterBy] = useState<string>("");
+
+  const handleSortChange = (sortBy: string) => {
+    setSortBy(sortBy);
+    // Add sorting logic here if needed
+  };
+
+  const handleFilterChange = (filterBy: string) => {
+    setFilterBy(filterBy);
+    // Add filtering logic here if needed
+  };
+
   return (
     <div className="calendar-wrapper">
+      <CalendarOptions
+        onSortChange={handleSortChange}
+        onFilterChange={handleFilterChange}
+      />
       <TransportCalendar bookings={data} />
     </div>
   );

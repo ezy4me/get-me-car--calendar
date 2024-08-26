@@ -1,3 +1,39 @@
+.calendar-container {
+    height: calc(100vh - 100px);
+}
+
+/* Контейнер для кастомного скролла */
+.calendar-container {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: auto; /* Измените на auto для появления скроллбара */
+    width: 100%;
+}
+
+/* Кастомный скроллбар для WebKit-браузеров */
+.calendar-container::-webkit-scrollbar {
+    width: 12px; /* Ширина вертикального скроллбара */
+    height: 8px; /* Ширина вертикального скроллбара */
+}
+
+.calendar-container::-webkit-scrollbar-track {
+    background: #e9e9e9; /* Цвет фона трека */
+    border-radius: 8px;
+}
+
+.calendar-container::-webkit-scrollbar-thumb {
+    background: #429cf3; /* Цвет ползунка скроллбара */
+    border-radius: 8px;
+}
+
+.calendar-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Цвет ползунка при наведении */
+}
+
+.calendar-container::-webkit-scrollbar-horizontal {
+    height: 8px; /* Высота горизонтального скроллбара */
+}
 
 .transport-calendar {
     border-collapse: separate;
@@ -24,7 +60,7 @@
 
 .transport-calendar thead tr th:first-child {
     border-radius: 8px 0 0 0;
-    min-width: 150px;
+    min-width: 200px;
 }
 
 .transport-calendar thead tr th:last-child {
@@ -49,10 +85,19 @@
     background: #ffffff;
 }
 
-.transport-calendar tbody tr td:first-child {
-    border-radius: 0 0 0 0;
+// .transport-calendar tbody tr td:first-child {
+//     border-radius: 0 0 0 0;
+// }
+
+// .transport-calendar tbody tr td:last-child {
+//     border-radius: 0 0 0 0;
+// }
+
+.transport-calendar tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 8px;
 }
 
-.transport-calendar tbody tr td:last-child {
-    border-radius: 0 0 0 0;
+.transport-calendar tbody tr:last-child td:last-child {
+    border-radius: 0 0 8px 0;
 }
+

@@ -1,5 +1,8 @@
+@import "./scroll.scss";
 @import "./booking-cell.scss";
 @import "./trasport-calendar.scss";
+@import "./sort-options.scss";
+@import "./rental-modal.scss";
 
 * {
     font:
@@ -10,51 +13,50 @@
 
 .calendar-wrapper {
     padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .container {
-    min-height: calc(100vh - 40px);
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    overflow: auto;
     border-radius: 8px;
 }
 
-/* Контейнер для кастомного скролла */
-.container {
-    border-collapse: separate;
-    border-spacing: 0;
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px; 
+    font-size: 16px; 
+    font-weight: 600;
     border-radius: 8px; 
-    overflow: auto; /* Измените на auto для появления скроллбара */
-    width: 100%;
+    background-color: #429cf3; 
+    color: white;
+    border: 0;
+    cursor: pointer; 
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease; 
 }
 
-/* Кастомный скроллбар для WebKit-браузеров */
-.container::-webkit-scrollbar {
-    width: 12px; /* Ширина вертикального скроллбара */
-    height: 8px; /* Ширина вертикального скроллбара */
+.btn:hover {
+    background-color: #357abd; 
+    border-color: #357abd; 
 }
 
-.container::-webkit-scrollbar-track {
-    background: #e9e9e9; /* Цвет фона трека */
-    border-radius: 8px;
+.btn:active {
+    background-color: #2a6bbf; 
+    border-color: #2a6bbf; 
 }
 
-.container::-webkit-scrollbar-thumb {
-    background: #429CF3; /* Цвет ползунка скроллбара */
-    border-radius: 8px;
-}
-
-.container::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Цвет ползунка при наведении */
-}
-
-.container::-webkit-scrollbar-horizontal {
-    height: 8px; /* Высота горизонтального скроллбара */
+.btn:disabled {
+    background-color: #d0e1fc; 
+    color: #aaa; 
+    border-color: #d0e1fc; 
+    cursor: not-allowed; 
 }

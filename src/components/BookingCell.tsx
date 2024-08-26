@@ -1,13 +1,22 @@
 import React from "react";
 
-// Определение массива оттенков для разных статусов с типами
 const statusColors: Record<string, string[]> = {
   rent: ["#e3f2fd", "#bbdefb", "#64b5f6"],
   reserved: ["#b7efc5", "#92e6a7", "#6ede8a"],
   repair: ["#fff0f3", "#ffccd5", "#ffb3c1"],
 };
 
-// Определение типа для объекта бронирования
+const getBookingStyle = (booking: Booking, index: number): any => {
+  const colors = statusColors[booking.status] || statusColors["rent"];
+  const shadeIndex = index % colors.length;
+  const selectedColor = colors[shadeIndex];
+
+  return {
+    background: selectedColor,
+    color: "#000",
+  };
+};
+
 interface Booking {
   id: string;
   title: string;
@@ -18,31 +27,19 @@ interface Booking {
   backgroundColor: string;
   borderColor: string;
   textColor: string;
-  status: keyof typeof statusColors; // Ключи должны совпадать с ключами statusColors
+  status: any;
   transportName: string;
 }
 
-// Определение типов для пропсов компонента
 interface BookingCellProps {
-  booking: Booking | null; // Бронирование может быть null
+  booking: Booking | null;
   colSpan: number;
   index: number;
-  isStart?: boolean; // Эти поля необязательные
+  isStart?: boolean;
   isEnd?: boolean;
   isContinuous?: boolean;
+  onClick: () => void;
 }
-
-// Функция для получения цвета фона ячейки по индексу и статусу
-const getBookingStyle = (booking: Booking, index: number): any => {
-  const colors = statusColors[booking.status] || statusColors["rent"]; // По умолчанию используем синие оттенки
-  const shadeIndex = index % colors.length;
-  const selectedColor = colors[shadeIndex];
-
-  return {
-    background: selectedColor,
-    color: "#000",
-  };
-};
 
 const BookingCell: React.FC<BookingCellProps> = ({
   booking,
@@ -51,6 +48,7 @@ const BookingCell: React.FC<BookingCellProps> = ({
   isStart,
   isEnd,
   isContinuous,
+  onClick,
 }) => {
   const style = booking ? getBookingStyle(booking, index) : {};
 
@@ -61,7 +59,11 @@ const BookingCell: React.FC<BookingCellProps> = ({
     : "";
 
   return (
-    <td className="booking-cell" style={style} colSpan={colSpan}>
+    <td
+      onClick={onClick}
+      className="booking-cell"
+      style={style}
+      colSpan={colSpan}>
       {isContinuous && (
         <div
           className="is-continuous"

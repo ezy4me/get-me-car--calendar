@@ -1,0 +1,37 @@
+/* Контейнеры с кастомным скроллом */
+.calendar-container, .custom-modal {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: auto; /* Автоматическое появление скроллбара при необходимости */
+    width: 100%;
+}
+
+/* Кастомный скроллбар для WebKit-браузеров */
+.calendar-container::-webkit-scrollbar,
+.custom-modal::-webkit-scrollbar {
+    width: 12px; /* Ширина вертикального скроллбара */
+    height: 8px; /* Высота горизонтального скроллбара */
+}
+
+.calendar-container::-webkit-scrollbar-track,
+.custom-modal::-webkit-scrollbar-track {
+    background: #e9e9e9; /* Цвет фона трека */
+    border-radius: 8px;
+}
+
+.calendar-container::-webkit-scrollbar-thumb,
+.custom-modal::-webkit-scrollbar-thumb {
+    background: #429cf3; /* Цвет ползунка скроллбара */
+    border-radius: 8px;
+}
+
+.calendar-container::-webkit-scrollbar-thumb:hover,
+.custom-modal::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Цвет ползунка при наведении */
+}
+
+.calendar-container::-webkit-scrollbar-horizontal,
+.custom-modal::-webkit-scrollbar-horizontal {
+    height: 8px; /* Высота горизонтального скроллбара */
+}

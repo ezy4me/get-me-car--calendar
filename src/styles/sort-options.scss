@@ -1,0 +1,39 @@
+.calendar-options {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+    background: #429cf3;
+    border-radius: 8px;
+
+}
+
+.sort-options,
+.filter-options {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sort-options label {
+    font-weight: 600;
+}
+
+.filter-options label{
+    font-weight: 600;
+}
+
+.sort-options select {
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.sort-options select:focus {
+    border-color: #429cf3;
+    outline: none;
+}
