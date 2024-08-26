@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Select, { StylesConfig } from "react-select";
+import { IoOptions, IoSearch } from "react-icons/io5";
 
 interface SortOption {
   value: string;
@@ -9,11 +10,13 @@ interface SortOption {
 interface CalendarOptionsProps {
   onSortChange: (sortBy: string) => void;
   onFilterChange: (filterBy: string) => void;
+  onSearchChange: (searchTerm: string) => void;
 }
 
 const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   onSortChange,
   onFilterChange,
+  onSearchChange,
 }) => {
   const [selectedClassSort, setSelectedClassSort] = useState<SortOption | null>(
     null
@@ -25,6 +28,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   const [selectedNearestBookingSort, setSelectedNearestBookingSort] =
     useState<SortOption | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<SortOption | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const sortOptions: SortOption[] = [
     { value: "class", label: "Класс транспорта" },
@@ -63,6 +67,10 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
     onFilterChange(selectedOption?.value || "");
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSearchChange(e.target.value);
+  };
+
   const customStyles: StylesConfig<SortOption, false> = {
     control: (baseStyles, state) => ({
       ...baseStyles,
@@ -90,50 +98,67 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   return (
     <div className="container">
       <div className="calendar-options">
-        <div className="sort-options">
-          <Select
-            styles={customStyles}
-            value={selectedClassSort}
-            onChange={handleSortChange("class")}
-            options={sortOptions.filter((option) => option.value === "class")}
-            placeholder="Сортировать по классу"
-            isClearable
+        <div className="search-bar">
+          <IoSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Поиск транспорта"
+            onChange={handleSearchChange}
           />
-          <Select
-            styles={customStyles}
-            value={selectedTypeSort}
-            onChange={handleSortChange("type")}
-            options={sortOptions.filter((option) => option.value === "type")}
-            placeholder="Сортировать по типу"
-            isClearable
+        </div>
+        <div className="icon-dropdown">
+          <IoOptions
+            size={24}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="options-icon"
           />
-          <Select
-            styles={customStyles}
-            value={selectedIdSort}
-            onChange={handleSortChange("id")}
-            options={sortOptions.filter((option) => option.value === "id")}
-            placeholder="Сортировать по идентификатору"
-            isClearable
-          />
-          <Select
-            styles={customStyles}
-            value={selectedNearestBookingSort}
-            onChange={handleSortChange("nearestBooking")}
-            options={sortOptions.filter(
-              (option) => option.value === "nearestBooking"
-            )}
-            placeholder="Сортировать по ближайшему бронированию"
-            isClearable
-          />
+          {isDropdownOpen && (
+            <div className="dropdown-menu">
+              <Select
+                styles={customStyles}
+                value={selectedClassSort}
+                onChange={handleSortChange("class")}
+                options={sortOptions.filter((option) => option.value === "class")}
+                placeholder="Сортировать по классу"
+                isClearable
+              />
+              <Select
+                styles={customStyles}
+                value={selectedTypeSort}
+                onChange={handleSortChange("type")}
+                options={sortOptions.filter((option) => option.value === "type")}
+                placeholder="Сортировать по типу"
+                isClearable
+              />
+              <Select
+                styles={customStyles}
+                value={selectedIdSort}
+                onChange={handleSortChange("id")}
+                options={sortOptions.filter((option) => option.value === "id")}
+                placeholder="Сортировать по идентификатору"
+                isClearable
+              />
+              <Select
+                styles={customStyles}
+                value={selectedNearestBookingSort}
+                onChange={handleSortChange("nearestBooking")}
+                options={sortOptions.filter(
+                  (option) => option.value === "nearestBooking"
+                )}
+                placeholder="Сортировать по ближайшему бронированию"
+                isClearable
+              />
 
-          <Select
-            styles={customStyles}
-            value={selectedFilter}
-            onChange={handleFilterChange}
-            options={filterOptions}
-            placeholder="Фильтровать по"
-            isClearable
-          />
+              <Select
+                styles={customStyles}
+                value={selectedFilter}
+                onChange={handleFilterChange}
+                options={filterOptions}
+                placeholder="Фильтровать по"
+                isClearable
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

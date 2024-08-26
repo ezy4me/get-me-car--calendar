@@ -1,97 +1,197 @@
-.custom-modal-overlay {
+// Основные стили для модального окна
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 888;
+    z-index: 1000;
     opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+
     animation: fadeIn 0.3s forwards ease;
+
+    &--open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal {
+        background-color: #fff;
+        border-radius: 8px;
+        max-width: 600px;
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        position: relative;
+        animation: modalZoomIn 0.3s forwards ease;
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        &__title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        &__subtitle {
+            font-size: 18px;
+            color: #777;
+        }
+
+        &__close-button {
+            font-size: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+
+            &:hover {
+                color: #429cf3;
+            }
+        }
+    }
 }
 
-.custom-modal {
-    position: relative;
-    width: 90%;
-    max-width: 600px;
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: auto;
-    z-index: 999;
-    max-height: 800px;
-    opacity: 0;
-    transform: scale(0.8);
-    animation: modalZoomIn 0.3s forwards ease;
-}
-
-.custom-modal-overlay.open .custom-modal {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-}
-
-.modal-header {
+.rental-form {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    gap: 20px;
+    &__row {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 10px;
+
+        &--contact {
+            align-items: center;
+        }
+
+        &--services {
+            justify-content: space-between;
+        }
+
+        &--options {
+            flex-direction: column;
+        }
+    }
+
+    &__col {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    &__label {
+        flex: 1 1 45%;
+        font-weight: 600;
+    }
+
+    &__input {
+        flex: 1 1 45%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    &__checkbox {
+        margin-right: 10px;
+    }
+
+    &__button {
+        &--search {
+            padding: 8px 16px;
+        }
+
+        &--save {
+            margin-top: 20px;
+            align-self: flex-start;
+        }
+    }
 }
 
-.close-button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-.form-group {
-    margin-bottom: 16px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group input[type="time"],
-.form-group input[type="email"],
-.form-group input[type="tel"] {
+// Стили для подтверждающего модального окна
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-}
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 
-.form-group input[type="checkbox"] {
-    margin-right: 8px;
-}
+    .confirm-modal {
+        background-color: #fff;
+        border-radius: 8px;
+        max-width: 400px;
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
 
-.services label {
-    display: block;
-}
+        &__title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
 
-.search-button,
-.save-button {
-    background-color: #429cf3;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-}
+        &__text {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
 
-.search-button:hover,
-.save-button:hover {
-    background-color: #357ab8;
+        &__button {
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 10px;
+
+            &--save {
+                background-color: #429cf3;
+
+                &:hover {
+                    background-color: #357abd;
+                    border-color: #357abd;
+                }
+            }
+
+            &--discard {
+                background-color: #fa4759;
+
+                &:hover {
+                    background-color: #c82333;
+                }
+            }
+
+            &--cancel {
+                background-color: #6c757d;
+
+                &:hover {
+                    background-color: #5a6268;
+                }
+            }
+        }
+    }
 }
 
 @keyframes fadeIn {
@@ -112,40 +212,4 @@
         opacity: 1;
         transform: scale(1);
     }
-}
-
-.confirm-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.confirm-modal {
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 90%;
-    max-width: 400px;
-}
-
-.confirm-modal button {
-    width: 100%;
-}
-
-.confirm-modal button:hover {
-    background-color: #357ab8;
 }

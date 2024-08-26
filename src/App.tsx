@@ -190,6 +190,7 @@ const data = [
 function App() {
   const [sortBy, setSortBy] = useState<string>("");
   const [filterBy, setFilterBy] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const handleSortChange = (sortBy: string) => {
     setSortBy(sortBy);
@@ -201,11 +202,17 @@ function App() {
     // Add filtering logic here if needed
   };
 
+  const handleSearchChange = (searchValue: string) => {
+    setSearchValue(searchValue);
+    // Add filtering logic here if needed
+  };
+
   return (
     <div className="calendar-wrapper">
       <CalendarOptions
         onSortChange={handleSortChange}
         onFilterChange={handleFilterChange}
+        onSearchChange={handleSearchChange}
       />
       <TransportCalendar bookings={data} />
     </div>
