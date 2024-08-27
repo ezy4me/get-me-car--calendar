@@ -1,4 +1,3 @@
-// Основные стили для модального окна
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -27,6 +26,7 @@
         background-color: #fff;
         border-radius: 8px;
         max-width: 600px;
+        max-height: 600px;
         width: 100%;
         padding: 20px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -47,7 +47,7 @@
 
         &__subtitle {
             font-size: 18px;
-            color: #777;
+            color: #2b2b2b;
         }
 
         &__close-button {
@@ -70,12 +70,17 @@
     align-items: center;
     gap: 20px;
 
+    &__subtitle {
+        color: black;
+        font-size: 20px;
+    }
+
     &__row {
         width: 100%;
         display: flex;
         align-items: flex-start;
         justify-content: center;
-        gap: 10px;
+        gap: 24px;
 
         &--contact {
             align-items: center;
@@ -96,12 +101,18 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        gap: 10px;
+        gap: 12px;
     }
 
     &__label {
         flex: 1 1 45%;
-        font-weight: 600;
+        font-weight: 500;
+        font-size: 16px;
+        color: #2b2b2b;
+
+        &--checkbox {
+            color: black;
+        }
     }
 
     &__input {
@@ -109,6 +120,8 @@
         padding: 8px;
         border: 1px solid #ccc;
         border-radius: 8px;
+        width: 100%;
+        
 
         transition: border-color 0.3s ease;
 
@@ -134,8 +147,8 @@
         }
 
         &--save {
-            margin-top: 20px;
-            align-self: flex-start;
+            width: 100%;
+
         }
     }
 }
@@ -225,5 +238,114 @@
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+/* Медиазапросы для мобильных устройств */
+
+@media (max-width: 768px) {
+    .modal {
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .modal__header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .modal__close-button {
+        font-size: 28px;
+    }
+
+    .rental-form {
+        gap: 15px;
+    }
+
+    .rental-form__subtitle {
+        font-size: 18px;
+    }
+
+    .rental-form__row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .rental-form__label,
+    .rental-form__input {
+        font-size: 14px;
+    }
+
+    .rental-form__button--search {
+        padding: 6px 12px;
+        width: 100%;
+
+    }
+
+    .rental-form__button--save {
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .confirm-modal {
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .confirm-modal__title {
+        font-size: 18px;
+    }
+
+    .confirm-modal__text {
+        font-size: 14px;
+    }
+
+    .confirm-modal__button--save,
+    .confirm-modal__button--discard,
+    .confirm-modal__button--cancel {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal {
+        padding: 10px;
+    }
+
+    .modal__close-button {
+        font-size: 24px;
+    }
+
+    .rental-form__subtitle {
+        font-size: 16px;
+    }
+
+    .rental-form__label,
+    .rental-form__input {
+        font-size: 14px;
+    }
+
+    .rental-form__button--search {
+        padding: 4px 8px;
+    }
+
+    .confirm-modal {
+        padding: 10px;
+    }
+
+    .confirm-modal__title {
+        font-size: 16px;
+    }
+
+    .confirm-modal__text {
+        font-size: 14px;
+    }
+
+    .confirm-modal__button--save,
+    .confirm-modal__button--discard,
+    .confirm-modal__button--cancel {
+        font-size: 12px;
+        padding: 6px 10px;
     }
 }

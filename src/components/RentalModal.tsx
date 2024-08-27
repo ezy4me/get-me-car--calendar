@@ -246,7 +246,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
 
           <div className="rental-form__row">
             <div className="rental-form__col">
-              <label className="rental-form__label">
+              <label className="rental-form__label rental-form__label--checkbox">
                 <input
                   type="checkbox"
                   name="telegram"
@@ -256,7 +256,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
                 />
                 Telegram
               </label>
-              <label className="rental-form__label">
+              <label className="rental-form__label rental-form__label--checkbox">
                 <input
                   type="checkbox"
                   name="whatsapp"
@@ -266,7 +266,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
                 />
                 WhatsApp
               </label>
-              <label className="rental-form__label">
+              <label className="rental-form__label rental-form__label--checkbox">
                 <input
                   type="checkbox"
                   name="viber"
@@ -313,7 +313,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
 
           <div className="rental-form__row">
             <div className="rental-form__col">
-              <label className="rental-form__label">
+              <label className="rental-form__subtitle">
                 Дополнительные услуги
               </label>
               <div className="rental-form__row">
@@ -321,7 +321,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
                   type="text"
                   name="searchService"
                   className="rental-form__input rental-form__input--search"
-                  placeholder="ПОЛЕ_ПОИСКА"
+                  placeholder="Поиск..."
                 />
                 <button
                   type="button"
@@ -334,7 +334,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
 
           <div className="rental-form__row">
             <div className="rental-form__col">
-              <label className="rental-form__label">
+              <label className="rental-form__label rental-form__label--checkbox">
                 <input
                   type="checkbox"
                   name="driver"
@@ -344,7 +344,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
                 />
                 Водитель
               </label>
-              <label className="rental-form__label">
+              <label className="rental-form__label rental-form__label--checkbox">
                 <input
                   type="checkbox"
                   name="transfer"
@@ -354,7 +354,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
                 />
                 Трансфер
               </label>
-              <label className="rental-form__label">
+              <label className="rental-form__label rental-form__label--checkbox">
                 <input
                   type="checkbox"
                   name="childSeat"
@@ -364,7 +364,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
                 />
                 Детское кресло
               </label>
-              <label className="rental-form__label">
+              <label className="rental-form__label rental-form__label--checkbox">
                 <input
                   type="checkbox"
                   name="bluetoothHeadset"
@@ -377,7 +377,7 @@ const RentalModal: React.FC<RentalModalProps> = ({
             </div>
           </div>
 
-          <div className="rental-form__group">
+          <div className="rental-form__row">
             <button
               type="submit"
               className="btn rental-form__button rental-form__button--save">
