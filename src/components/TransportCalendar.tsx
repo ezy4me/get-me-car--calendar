@@ -57,9 +57,14 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
     );
     setSelectedRange(selectedDates);
 
-    const selectedRows = Array.from(new Set(items.map(item => parseInt(item.getAttribute("data-row") || ""))));
+    const selectedRows = Array.from(
+      new Set(
+        items.map((item) => parseInt(item.getAttribute("data-row") || ""))
+      )
+    );
 
-    const smallestRowId = selectedRows.length > 0 ? Math.min(...selectedRows) : null;
+    const smallestRowId =
+      selectedRows.length > 0 ? Math.min(...selectedRows) : null;
 
     if (smallestRowId !== null) {
       setInitialRow(smallestRowId);
@@ -182,7 +187,8 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
       });
 
       // Ensure only the smallest row is highlighted
-      const smallestRowId = selectedRows.size > 0 ? Math.min(...selectedRows) : null;
+      const smallestRowId =
+        selectedRows.size > 0 ? Math.min(...selectedRows) : null;
 
       setHighlightedHeaders(Array.from(selectedHeaders));
       setHighlightedRows(smallestRowId !== null ? [smallestRowId] : []);

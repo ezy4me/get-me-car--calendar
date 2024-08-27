@@ -53,9 +53,11 @@ const BookingCell: React.FC<BookingCellProps> = ({
   const style = booking ? getBookingStyle(booking, index) : {};
 
   const rentRange = booking
-    ? `${new Date(booking.start).toLocaleDateString("ru-RU")} - ${new Date(
-        booking.end
-      ).toLocaleDateString("ru-RU")}`
+    ? `${new Date(booking.start)
+        .toLocaleDateString("ru-RU")
+        .substring(0, 5)} - ${new Date(booking.end)
+        .toLocaleDateString("ru-RU")
+        .substring(0, 5)}`
     : "";
 
   return (
