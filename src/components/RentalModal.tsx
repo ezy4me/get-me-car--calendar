@@ -12,10 +12,10 @@ const RentalModal: React.FC<RentalModalProps> = ({
   booking,
 }) => {
   const [formData, setFormData] = useState({
-    pickupDate: "",
-    returnDate: "",
-    pickupTime: "",
-    returnTime: "",
+    pickupDate: booking.start.split('T')[0],
+    returnDate: booking.end.split('T')[0],
+    pickupTime: booking.start.split('T')[1],
+    returnTime: booking.end.split('T')[1],
     location: "",
     country: "",
     city: "",
@@ -54,6 +54,9 @@ const RentalModal: React.FC<RentalModalProps> = ({
         setShowConfirm(true);
       }
     };
+
+    console.log(booking);
+    
 
     document.addEventListener("keydown", handleKeyDown);
     return () => {

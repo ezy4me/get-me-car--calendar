@@ -78,9 +78,12 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
 
   const createBookingMatrix = () => {
     const matrix: { transportName: string; cells: JSX.Element[] }[] = [];
+
     Object.keys(groupedBookings).forEach((transportName) => {
       const row: JSX.Element[] = [];
       const relevantBookings = groupedBookings[transportName];
+      const occupiedColumns = new Array(dates.length).fill(0);
+
       let colIndex = 0;
 
       relevantBookings.forEach((booking, index) => {
@@ -90,6 +93,51 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
         const startCol = dates.indexOf(startDate);
 
         while (colIndex < startCol) {
+          if (occupiedColumns[colIndex] === 0) {
+            row[colIndex] = (
+              <td
+                key={`empty-${transportName}-${colIndex}`}
+                className="cell"
+                data-id={colIndex.toString()}
+                data-row={matrix.length}
+              />
+            );
+            colIndex++;
+          }
+        }
+
+        let adjustedColSpan = colSpan;
+        for (let i = startCol; i < startCol + colSpan; i++) {
+          if (i < dates.length && occupiedColumns[i] > 0) {
+            adjustedColSpan--;
+          }
+        }
+
+        row[startCol] = (
+          <BookingCell
+            key={`cell-${transportName}-${startCol}`}
+            booking={booking}
+            colSpan={adjustedColSpan}
+            index={index}
+            isContinuous={
+              index > 0 &&
+              relevantBookings[index - 1].end.split("T")[0] === startDate
+            }
+            onClick={() => setSelectedBooking(booking)}
+          />
+        );
+
+        for (let i = startCol; i < startCol + colSpan; i++) {
+          if (i < dates.length) {
+            occupiedColumns[i]++;
+          }
+        }
+
+        colIndex = startCol + colSpan;
+      });
+
+      while (colIndex < dates.length) {
+        if (occupiedColumns[colIndex] === 0) {
           row[colIndex] = (
             <td
               key={`empty-${transportName}-${colIndex}`}
@@ -98,36 +146,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
               data-row={matrix.length}
             />
           );
-          colIndex++;
         }
-
-        const previousBooking = relevantBookings[index - 1];
-        const isContinuous =
-          previousBooking && previousBooking.end.split("T")[0] === startDate;
-
-        row[startCol] = (
-          <BookingCell
-            key={`cell-${transportName}-${startCol}`}
-            booking={booking}
-            colSpan={colSpan}
-            index={index}
-            isContinuous={isContinuous}
-            onClick={() => setSelectedBooking(booking)}
-          />
-        );
-
-        colIndex = startCol + colSpan;
-      });
-
-      while (colIndex < dates.length) {
-        row[colIndex] = (
-          <td
-            key={`empty-${transportName}-${colIndex}`}
-            className="cell"
-            data-id={colIndex.toString()}
-            data-row={matrix.length}
-          />
-        );
         colIndex++;
       }
 
