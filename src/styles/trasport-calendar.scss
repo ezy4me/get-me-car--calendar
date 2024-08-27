@@ -76,7 +76,7 @@
     position: sticky;
     left: 0;
     z-index: 1;
-    border-right: 4px solid #F5F6FB;
+    border-right: 4px solid #f5f6fb;
 }
 
 .transport-calendar thead th:nth-child(2) {
@@ -90,7 +90,7 @@
     left: 0;
     z-index: 1;
     background: inherit;
-    border-right: 4px solid #F5F6FB;
+    border-right: 4px solid #f5f6fb;
 }
 
 .highlighted-header {
@@ -101,4 +101,10 @@
 .highlighted-transport {
     background-color: #e8f3fe !important;
     color: #429cf3 !important;
+}
+
+@media (max-width: 480px) {
+    .transport-calendar thead tr th:first-child {
+        min-width: 120px;
+    }
 }

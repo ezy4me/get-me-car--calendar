@@ -2,7 +2,7 @@
 .calendar-container, .modal {
     border-collapse: separate;
     border-spacing: 0;
-    border-radius: 8px;
+    // border-radius: 8px;
     overflow: auto; /* Автоматическое появление скроллбара при необходимости */
     width: 100%;
 }
@@ -17,13 +17,13 @@
 .calendar-container::-webkit-scrollbar-track,
 .modal::-webkit-scrollbar-track {
     background: #e9e9e9; /* Цвет фона трека */
-    border-radius: 8px;
+    // border-radius: 8px;
 }
 
 .calendar-container::-webkit-scrollbar-thumb,
 .modal::-webkit-scrollbar-thumb {
     background: #429cf3; /* Цвет ползунка скроллбара */
-    border-radius: 8px;
+    // border-radius: 8px;
 }
 
 .calendar-container::-webkit-scrollbar-thumb:hover,
