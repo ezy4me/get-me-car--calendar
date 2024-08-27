@@ -54,25 +54,25 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
     );
     setSelectedRange(selectedDates);
 
-    console.log(new Set(selectedDates));
-    console.log(items[0]);
-
     const startRow = items.length
       ? parseInt(items[0].getAttribute("data-row") || "")
       : null;
 
-    console.log(startRow);
-
     if (startRow !== null) {
       setInitialRow(startRow);
       const transportName = bookingMatrix[startRow]?.transportName;
-      console.log("Transport Name:", transportName);
-
       const bookingsInRow = groupedBookings[transportName || ""] || [];
-      console.log("Bookings in Row:", bookingsInRow);
 
-      console.log("Found Booking:", bookingsInRow[0]);
-      setSelectedBooking(bookingsInRow[0] || null);
+      if (bookingsInRow.length > 0) {
+        const newBooking = {
+          ...bookingsInRow[0],
+          start: selectedDates[0] + "T09:00:00",
+          end: selectedDates[selectedDates.length - 1] + "T18:00:00",
+        };
+
+        console.log("Updated Booking:", newBooking);
+        setSelectedBooking(newBooking);
+      }
     }
   };
 
