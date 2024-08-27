@@ -44,6 +44,10 @@
     border-left: 0;
 }
 
+.transport-calendar tbody td:nth-child(2) {
+    border-left: 0;
+}
+
 .transport-calendar tbody tr:nth-child(even) {
     background: #f3f3f3;
 }
@@ -67,6 +71,23 @@
 .transport-calendar tbody tr:last-child td:last-child {
     border-radius: 0 0 8px 0;
 }
+
+.transport-calendar thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1; /* чтобы ячейка была поверх других элементов */
+    border-right: 2px solid #e8f3fe;
+    
+}
+
+.transport-calendar tbody td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1; /* чтобы ячейка была поверх других элементов */
+    background: inherit;
+    border-right: 2px solid #e8f3fe;
+}
+
 
 .highlighted-header {
     background-color: #e8f3fe !important;
