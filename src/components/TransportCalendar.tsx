@@ -7,7 +7,7 @@ import {
   calculateColSpan,
 } from "../utils/dateUtils";
 import { ReactMouseSelect, TFinishSelectionCallback } from "react-mouse-select";
-
+import { IoAddCircle  } from "react-icons/io5";
 interface Booking {
   id: string;
   title: string;
@@ -245,9 +245,14 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
             <tr>
               <td className="cell">
                 <button
-                  className="btn"
+                  className="btn cell-btn"
                   onClick={() => alert("Редирект на форму")}>
                   Добавить машину
+                </button>
+                <button
+                  className="btn cell-btn-icon"
+                  onClick={() => alert("Редирект на форму")}>
+                  <IoAddCircle  size={32}/>
                 </button>
               </td>
               {Array(dates.length)

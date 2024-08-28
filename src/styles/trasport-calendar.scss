@@ -27,7 +27,7 @@
 
 .transport-calendar thead tr th:first-child {
     border-radius: 8px 0 0 0;
-    min-width: 260px;
+    min-width: 240px;
 }
 
 .transport-calendar thead tr th:last-child {
@@ -103,8 +103,36 @@
     color: #429cf3 !important;
 }
 
+.cell-btn-icon {
+    display: none !important;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    width: 100%;
+}
+
 @media (max-width: 480px) {
     .transport-calendar thead tr th:first-child {
         min-width: 120px;
+    }
+
+    .transport-calendar tbody tr td:first-child {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 3ch;
+        text-align: start;
+
+        &:hover {
+            max-width: inherit;
+        }
+
+        .cell-btn {
+            display: none;
+        }
+
+        .cell-btn-icon {
+            display: flex block !important;
+        }
     }
 }
