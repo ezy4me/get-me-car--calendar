@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Select, { StylesConfig } from "react-select";
 import { IoOptions, IoSearch, IoCalendar } from "react-icons/io5";
 import { DateRangePicker, StaticRange } from "react-date-range";
-
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { ru } from "date-fns/locale";
@@ -131,7 +130,6 @@ const customStaticRanges: StaticRange[] = [
     },
   },
 ];
-
 const isSameDay = (date1?: Date, date2?: Date) => {
   if (!date1 || !date2) return false;
   return date1.toDateString() === date2.toDateString();
@@ -156,6 +154,9 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   const [selectedFilter, setSelectedFilter] = useState<SortOption | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  const calendarRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const today = new Date();
   const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -213,6 +214,36 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
     onDateRangeChange(ranges.selection);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      calendarRef.current &&
+      !calendarRef.current.contains(event.target as Node)
+    ) {
+      setIsCalendarOpen(false);
+    }
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleCalendarClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent click from closing the calendar
+  };
+
+  const handleDropdownClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent click from closing the dropdown
+  };
+
   const customStyles: StylesConfig<SortOption, false> = {
     control: (baseStyles, state) => ({
       ...baseStyles,
@@ -243,8 +274,14 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
         <div className="calendar-options-item">
           <div
             className="calendar-icon"
-            onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
-            <IoCalendar size={24} className="calendar-icon" />
+            ref={calendarRef}
+            onMouseDown={handleCalendarClick}
+          >
+            <IoCalendar
+              size={24}
+              className="calendar-icon"
+              onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+            />
             {isCalendarOpen && (
               <div className="calendar-dropdown">
                 <DateRangePicker
@@ -258,7 +295,6 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                 />
               </div>
             )}
-
             <div className="dateRange-container">
               <p className="dateRange">
                 {dateRange.startDate.toLocaleDateString("ru-RU")}
@@ -268,7 +304,6 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
               </p>
             </div>
           </div>
-
           <div className="icon-dropdown">
             <IoOptions
               size={26}
@@ -276,7 +311,10 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
               className="options-icon"
             />
             {isDropdownOpen && (
-              <div className="dropdown-menu">
+              <div
+                className="dropdown-menu"
+                ref={dropdownRef}
+                onMouseDown={handleDropdownClick}>
                 <div className="dropdown-menu-list">
                   <Select
                     styles={customStyles}
@@ -331,7 +369,6 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
             )}
           </div>
         </div>
-
         <div className="search-bar">
           <IoSearch className="search-icon" />
           <input
