@@ -8,6 +8,7 @@ import {
 } from "../utils/dateUtils";
 import { ReactMouseSelect, TFinishSelectionCallback } from "react-mouse-select";
 import { IoAddCircle } from "react-icons/io5";
+
 interface Booking {
   id: string;
   title: string;
@@ -33,6 +34,8 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
   const [highlightedHeaders, setHighlightedHeaders] = useState<number[]>([]);
   const [highlightedRows, setHighlightedRows] = useState<number[]>([]);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const observer = new MutationObserver(() => {
       const selectedItems = containerRef.current?.querySelectorAll(".selected");
@@ -40,13 +43,14 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
       const selectedRows = new Set<number>();
 
       selectedItems?.forEach((item) => {
-        const index = parseInt(item.getAttribute("data-id") || "0");
+        const index = parseInt(item.getAttribute("data-id") || "");
+        const rowId = parseInt(item.getAttribute("data-row") || "");
         selectedHeaders.add(index);
-        selectedRows.add(parseInt(item.getAttribute("data-row") || "0"));
+        selectedRows.add(rowId);
       });
 
       const smallestRowId =
-        selectedRows.size > 0 ? Math.min(...selectedRows) : null;
+        selectedRows.size > 0 ? Array.from(selectedRows)[0] : null;
 
       setHighlightedHeaders(Array.from(selectedHeaders));
       setHighlightedRows(smallestRowId !== null ? [smallestRowId] : []);
@@ -66,8 +70,6 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
     };
   }, []);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-
   if (!bookings || bookings.length === 0) {
     return (
       <div className="calendar-container container no-data-placeholder">
@@ -81,17 +83,20 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
     );
   }
 
+  const extractNumericId = (id: string) => parseInt(id.replace(/\D/g, ""), 10);
+
   const { minDate, maxDate } = getMinMaxDates(bookings);
   const minDateStr = minDate.toISOString().split("T")[0];
   const maxDateStr = maxDate.toISOString().split("T")[0];
   const dates: string[] = generateDateRange(minDateStr, maxDateStr);
 
-  const groupedBookings = bookings.reduce<Record<string, Booking[]>>(
+  const groupedBookings = bookings.reduce<Record<number, Booking[]>>(
     (acc, booking) => {
-      if (!acc[booking.transportName]) {
-        acc[booking.transportName] = [];
+      const numericId = extractNumericId(booking.id);
+      if (!acc[numericId]) {
+        acc[numericId] = [];
       }
-      acc[booking.transportName].push(booking);
+      acc[numericId].push(booking);
       return acc;
     },
     {}
@@ -110,13 +115,12 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
     );
 
     const smallestRowId =
-      selectedRows.length > 0 ? Math.min(...selectedRows) : null;
+      selectedRows.length > 0 ? Array.from(selectedRows)[0] : null;
 
     if (smallestRowId !== null) {
       setInitialRow(smallestRowId);
-      const transportName = bookingMatrix[smallestRowId]?.transportName;
-      const bookingsInRow = groupedBookings[transportName || ""] || [];
 
+      const bookingsInRow = groupedBookings[smallestRowId] || [];
       if (bookingsInRow.length > 0) {
         const newBooking = {
           ...bookingsInRow[0],
@@ -129,21 +133,22 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
     }
 
     const selectedHeaders = items.map((item) =>
-      parseInt(item.getAttribute("data-id") || "")
+      parseInt(item.getAttribute("data-id") || "0", 10)
     );
 
     setHighlightedHeaders(selectedHeaders);
-
-    // Set highlightedRows to only include the smallest row ID
-    setHighlightedRows(smallestRowId !== null ? [smallestRowId] : []);
   };
 
   const createBookingMatrix = () => {
-    const matrix: { transportName: string; cells: JSX.Element[] }[] = [];
+    const matrix: {
+      transportName: string;
+      transportId: string;
+      cells: JSX.Element[];
+    }[] = [];
 
-    Object.keys(groupedBookings).forEach((transportName) => {
+    Object.keys(groupedBookings).forEach((numericId) => {
       const row: JSX.Element[] = [];
-      const relevantBookings = groupedBookings[transportName];
+      const relevantBookings = groupedBookings[parseInt(numericId, 10)];
       const occupiedColumns = new Array(dates.length).fill(0);
 
       let colIndex = 0;
@@ -158,10 +163,10 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
           if (occupiedColumns[colIndex] === 0) {
             row[colIndex] = (
               <td
-                key={`empty-${transportName}-${colIndex}`}
+                key={`empty-${numericId}-${colIndex}`}
                 className="cell"
                 data-id={colIndex.toString()}
-                data-row={matrix.length}
+                data-row={numericId}
               />
             );
             colIndex++;
@@ -177,7 +182,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
 
         row[startCol] = (
           <BookingCell
-            key={`cell-${transportName}-${startCol}`}
+            key={`cell-${numericId}-${startCol}`}
             booking={booking}
             colSpan={adjustedColSpan}
             index={index}
@@ -202,17 +207,21 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
         if (occupiedColumns[colIndex] === 0) {
           row[colIndex] = (
             <td
-              key={`empty-${transportName}-${colIndex}`}
+              key={`empty-${numericId}-${colIndex}`}
               className="cell"
               data-id={colIndex.toString()}
-              data-row={matrix.length}
+              data-row={numericId}
             />
           );
         }
         colIndex++;
       }
 
-      matrix.push({ transportName, cells: row });
+      matrix.push({
+        transportName: relevantBookings[0].transportName,
+        transportId: numericId,
+        cells: row,
+      });
     });
 
     return matrix;
@@ -245,7 +254,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
               <tr key={rowIndex}>
                 <td
                   className={
-                    highlightedRows.includes(rowIndex)
+                    highlightedRows.includes(parseInt(row.transportId))
                       ? "highlighted-transport"
                       : ""
                   }>
