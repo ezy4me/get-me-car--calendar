@@ -1,11 +1,17 @@
 .calendar-options {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 20px;
     padding: 10px 20px;
     background: #429cf3;
     border-radius: 8px;
+}
+
+.calendar-options-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .search-bar {
@@ -44,7 +50,8 @@
     align-items: center;
 }
 
-.options-icon {
+.options-icon,
+.calendar-icon {
     cursor: pointer;
     color: white;
 
@@ -74,4 +81,46 @@
 
 .dropdown-menu .react-select__control {
     margin-bottom: 8px;
+}
+
+.calendar-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    p {
+        margin: 0;
+        background: #0077ff;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+}
+
+.calendar-dropdown {
+    position: absolute;
+    top: 180%;
+    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.dateRange {
+    color: white;
+}
+
+.dateRange-container {
+    display: flex;
+    gap: 4px;
+}
+
+@media (max-width: 800px) {
+    .calendar-options {
+        flex-direction: column;
+        gap: 12px;
+    }
 }

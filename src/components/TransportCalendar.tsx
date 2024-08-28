@@ -7,7 +7,7 @@ import {
   calculateColSpan,
 } from "../utils/dateUtils";
 import { ReactMouseSelect, TFinishSelectionCallback } from "react-mouse-select";
-import { IoAddCircle  } from "react-icons/io5";
+import { IoAddCircle } from "react-icons/io5";
 interface Booking {
   id: string;
   title: string;
@@ -27,6 +27,60 @@ interface TransportCalendarProps {
 }
 
 const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
+  const [selectedRange, setSelectedRange] = useState<string[]>([]);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [initialRow, setInitialRow] = useState<number | null>(null);
+  const [highlightedHeaders, setHighlightedHeaders] = useState<number[]>([]);
+  const [highlightedRows, setHighlightedRows] = useState<number[]>([]);
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const selectedItems = containerRef.current?.querySelectorAll(".selected");
+      const selectedHeaders = new Set<number>();
+      const selectedRows = new Set<number>();
+
+      selectedItems?.forEach((item) => {
+        const index = parseInt(item.getAttribute("data-id") || "0");
+        selectedHeaders.add(index);
+        selectedRows.add(parseInt(item.getAttribute("data-row") || "0"));
+      });
+
+      const smallestRowId =
+        selectedRows.size > 0 ? Math.min(...selectedRows) : null;
+
+      setHighlightedHeaders(Array.from(selectedHeaders));
+      setHighlightedRows(smallestRowId !== null ? [smallestRowId] : []);
+    });
+
+    const observeTarget = containerRef.current;
+    if (observeTarget) {
+      observer.observe(observeTarget, {
+        attributes: true,
+        subtree: true,
+        attributeFilter: ["class"],
+      });
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  if (!bookings || bookings.length === 0) {
+    return (
+      <div className="calendar-container container no-data-placeholder">
+        <p>Данных о бронированиях нет</p>
+        <button
+          className="btn"
+          onClick={() => alert("Редирект на форму добавления транспорта")}>
+          Добавить транспорт
+        </button>
+      </div>
+    );
+  }
+
   const { minDate, maxDate } = getMinMaxDates(bookings);
   const minDateStr = minDate.toISOString().split("T")[0];
   const maxDateStr = maxDate.toISOString().split("T")[0];
@@ -42,14 +96,6 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
     },
     {}
   );
-
-  const [selectedRange, setSelectedRange] = useState<string[]>([]);
-  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
-  const [initialRow, setInitialRow] = useState<number | null>(null);
-  const [highlightedHeaders, setHighlightedHeaders] = useState<number[]>([]);
-  const [highlightedRows, setHighlightedRows] = useState<number[]>([]);
-
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleFinishSelection: TFinishSelectionCallback = (items, e) => {
     const selectedDates = items.map(
@@ -174,40 +220,6 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
 
   const bookingMatrix = createBookingMatrix();
 
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const selectedItems = containerRef.current?.querySelectorAll(".selected");
-      const selectedHeaders = new Set<number>();
-      const selectedRows = new Set<number>();
-
-      selectedItems?.forEach((item) => {
-        const index = parseInt(item.getAttribute("data-id") || "0");
-        selectedHeaders.add(index);
-        selectedRows.add(parseInt(item.getAttribute("data-row") || "0"));
-      });
-
-      // Ensure only the smallest row is highlighted
-      const smallestRowId =
-        selectedRows.size > 0 ? Math.min(...selectedRows) : null;
-
-      setHighlightedHeaders(Array.from(selectedHeaders));
-      setHighlightedRows(smallestRowId !== null ? [smallestRowId] : []);
-    });
-
-    const observeTarget = containerRef.current;
-    if (observeTarget) {
-      observer.observe(observeTarget, {
-        attributes: true,
-        subtree: true,
-        attributeFilter: ["class"],
-      });
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   return (
     <>
       <main className="calendar-container container" ref={containerRef}>
@@ -252,7 +264,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ bookings }) => {
                 <button
                   className="btn cell-btn-icon"
                   onClick={() => alert("Редирект на форму")}>
-                  <IoAddCircle  size={32}/>
+                  <IoAddCircle size={32} />
                 </button>
               </td>
               {Array(dates.length)
