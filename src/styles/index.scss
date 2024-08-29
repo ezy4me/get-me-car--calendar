@@ -17,7 +17,7 @@
 .calendar-wrapper {
     padding: 20px;
     min-height: 100vh;
-    background-color: #F5F6FB;
+    background-color: #f5f6fb;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -67,4 +67,15 @@
 .btn:focus {
     border-color: #0077ff;
     outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.link {
+    &:hover {
+        color: #429cf3;
+    }
 }

@@ -1,9 +1,8 @@
 import React from "react";
-import { Booking } from "../types";
 import { statusColors } from "../utils/colorUtils";
 
-const getBookingStyle = (booking: Booking, index: number): any => {
-  const colors = statusColors[booking.status] || statusColors["rent"];
+const getrentStyle = (rent: any, index: number): any => {
+  const colors = statusColors[rent.status] || statusColors["rent"];
   const shadeIndex = index % colors.length;
   const selectedColor = colors[shadeIndex];
 
@@ -13,8 +12,8 @@ const getBookingStyle = (booking: Booking, index: number): any => {
   };
 };
 
-interface BookingCellProps {
-  booking: Booking | null;
+interface rentCellProps {
+  rent: any | null;
   colSpan: number;
   index: number;
   isStart?: boolean;
@@ -23,8 +22,8 @@ interface BookingCellProps {
   onClick: () => void;
 }
 
-const BookingCell: React.FC<BookingCellProps> = ({
-  booking,
+const rentCell: React.FC<rentCellProps> = ({
+  rent,
   colSpan,
   index,
   isStart,
@@ -32,22 +31,18 @@ const BookingCell: React.FC<BookingCellProps> = ({
   isContinuous,
   onClick,
 }) => {
-  const style = booking ? getBookingStyle(booking, index) : {};
+  const style = rent ? getrentStyle(rent, index) : {};
 
-  const rentRange = booking
-    ? `${new Date(booking.start)
+  const rentRange = rent
+    ? `${new Date(rent.start_date)
         .toLocaleDateString("ru-RU")
-        .substring(0, 5)} - ${new Date(booking.end)
+        .substring(0, 5)} - ${new Date(rent.end_date)
         .toLocaleDateString("ru-RU")
         .substring(0, 5)}`
     : "";
 
   return (
-    <td
-      onClick={onClick}
-      className="booking-cell"
-      style={style}
-      colSpan={colSpan}>
+    <td onClick={onClick} className="booking-cell" style={style} colSpan={colSpan}>
       {isContinuous && (
         <div
           className="is-continuous"
@@ -59,4 +54,4 @@ const BookingCell: React.FC<BookingCellProps> = ({
   );
 };
 
-export default BookingCell;
+export default rentCell;

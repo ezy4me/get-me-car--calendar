@@ -1,11 +1,11 @@
-
 .booking-cell {
     position: relative;
     text-align: center;
     padding: 8px;
     cursor: pointer;
     border-left: 1px solid #e9e9e9;
-    background: inherit; 
+    border-top: 1px solid #e9e9e9;
+    background: inherit;
 }
 
 .booking-cell:has(.is-continuous) {
@@ -13,7 +13,7 @@
 }
 
 .booking-cell .content {
-    z-index: 1; 
+    z-index: 1;
     font-size: 14px;
 }
 
@@ -23,17 +23,17 @@
     top: 0;
     width: 40px;
     height: 100%;
-    pointer-events: none; 
-    border-left: 1px solid #e9e9e9; 
+    pointer-events: none;
+    border-left: 1px solid #e9e9e9;
 }
 
 .booking-cell:hover {
-    opacity: 0.8; 
+    opacity: 0.8;
 }
 
 .booking-cell:hover .is-continuous {
-    opacity: 0.8; 
-    pointer-events: auto; 
+    opacity: 0.8;
+    pointer-events: auto;
 }
 .booking-cell,
 .cell {
@@ -41,7 +41,7 @@
     text-align: center;
     padding: 8px;
     cursor: pointer;
-    background: inherit; 
+    background: inherit;
 }
 
 .booking-cell.selected,
@@ -50,7 +50,7 @@
 }
 
 .selected {
-    background: #adf; 
+    background: #adf;
     cursor: grabbing;
 }
 

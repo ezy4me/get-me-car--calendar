@@ -17,11 +17,11 @@ export const generateDateRange = (start: string, end: string): string[] => {
 };
 
 export const getMinMaxDates = (
-  bookings: { start: string; end: string }[]
+  bookings: { start_date: string; end_date: string }[]
 ): { minDate: Date; maxDate: Date } => {
   const allDates = bookings.flatMap((booking) => [
-    new Date(booking.start).getTime(),
-    new Date(booking.end).getTime(),
+    new Date(booking.start_date).getTime(),
+    new Date(booking.end_date).getTime(),
   ]);
 
   const minDate = new Date(Math.min(...allDates));

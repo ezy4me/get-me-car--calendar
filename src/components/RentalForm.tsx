@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface RentalFormProps {
   formData: any;
@@ -221,7 +221,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
         <input
           type="text"
           name="amountDue"
-          value={formData.amountDue + " $"}
+          value={formData.amountDue + " " + formData.currency}
           readOnly
           className="rental-form__input rental-form__input--currency"
         />
