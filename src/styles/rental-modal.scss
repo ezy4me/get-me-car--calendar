@@ -37,7 +37,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-
         }
 
         &__title {
@@ -67,96 +66,6 @@
     }
 }
 
-.rental-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-
-    &__subtitle {
-        color: black;
-        font-size: 20px;
-    }
-
-    &__row {
-        width: 100%;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        gap: 24px;
-
-        &--contact {
-            align-items: center;
-        }
-
-        &--services {
-            justify-content: space-between;
-        }
-
-        &--options {
-            flex-direction: column;
-        }
-    }
-
-    &__col {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        gap: 12px;
-    }
-
-    &__label {
-        flex: 1 1 45%;
-        font-weight: 500;
-        font-size: 16px;
-        color: #2b2b2b;
-
-        &--checkbox {
-            color: black;
-        }
-    }
-
-    &__input {
-        flex: 1 1 45%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        width: 100%;
-        
-
-        transition: border-color 0.3s ease;
-
-        &:focus {
-            border-color: #0077ff;
-            outline: none;
-        }
-    }
-
-    &__checkbox {
-        margin-right: 10px;
-        transition: border-color 0.3s ease;
-
-        &:focus {
-            border-color: #0077ff;
-            outline: none;
-        }
-    }
-
-    &__button {
-        &--search {
-            padding: 8px 16px;
-        }
-
-        &--save {
-            width: 100%;
-
-        }
-    }
-}
-
-// Стили для подтверждающего модального окна
 .confirm-overlay {
     position: fixed;
     top: 0;
@@ -244,8 +153,6 @@
     }
 }
 
-/* Медиазапросы для мобильных устройств */
-
 @media (max-width: 768px) {
     .modal {
         padding: 15px;
@@ -259,35 +166,6 @@
 
     .modal__close-button {
         font-size: 28px;
-    }
-
-    .rental-form {
-        gap: 15px;
-    }
-
-    .rental-form__subtitle {
-        font-size: 18px;
-    }
-
-    .rental-form__row {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .rental-form__label,
-    .rental-form__input {
-        font-size: 14px;
-    }
-
-    .rental-form__button--search {
-        padding: 6px 12px;
-        width: 100%;
-
-    }
-
-    .rental-form__button--save {
-        margin-top: 15px;
-        width: 100%;
     }
 
     .confirm-modal {
@@ -318,19 +196,6 @@
 
     .modal__close-button {
         font-size: 24px;
-    }
-
-    .rental-form__subtitle {
-        font-size: 16px;
-    }
-
-    .rental-form__label,
-    .rental-form__input {
-        font-size: 14px;
-    }
-
-    .rental-form__button--search {
-        padding: 4px 8px;
     }
 
     .confirm-modal {

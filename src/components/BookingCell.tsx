@@ -1,10 +1,6 @@
 import React from "react";
-
-const statusColors: Record<string, string[]> = {
-  rent: ["#e3f2fd", "#bbdefb", "#64b5f6"],
-  reserved: ["#b7efc5", "#92e6a7", "#6ede8a"],
-  repair: ["#fff4df", "#ffeeb8", "#ffdf88"],
-};
+import { Booking } from "../types";
+import { statusColors } from "../utils/colorUtils";
 
 const getBookingStyle = (booking: Booking, index: number): any => {
   const colors = statusColors[booking.status] || statusColors["rent"];
@@ -16,20 +12,6 @@ const getBookingStyle = (booking: Booking, index: number): any => {
     color: "#000",
   };
 };
-
-interface Booking {
-  id: string;
-  title: string;
-  start: string;
-  end: string;
-  url: string;
-  editable: boolean;
-  backgroundColor: string;
-  borderColor: string;
-  textColor: string;
-  status: any;
-  transportName: string;
-}
 
 interface BookingCellProps {
   booking: Booking | null;

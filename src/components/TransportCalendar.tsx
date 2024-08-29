@@ -8,20 +8,7 @@ import {
 } from "../utils/dateUtils";
 import { ReactMouseSelect, TFinishSelectionCallback } from "react-mouse-select";
 import { IoAddCircle } from "react-icons/io5";
-
-interface Booking {
-  id: string;
-  title: string;
-  start: string;
-  end: string;
-  url: string;
-  editable: boolean;
-  backgroundColor: string;
-  borderColor: string;
-  textColor: string;
-  status: any;
-  transportName: string;
-}
+import { Booking } from "../types";
 
 interface TransportCalendarProps {
   bookings: Booking[];

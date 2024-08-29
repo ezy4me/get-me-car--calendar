@@ -6,12 +6,12 @@
     padding: 10px 20px;
     background: #429cf3;
     border-radius: 8px;
-}
 
-.calendar-options-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 }
 
 .search-bar {
@@ -109,11 +109,11 @@
     z-index: 100;
 }
 
-.dateRange {
+.date-range {
     color: white;
 }
 
-.dateRange-container {
+.date-range-container {
     display: flex;
     gap: 4px;
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CalendarOptions from "./components/CalendarOptions";
 import TransportCalendar from "./components/TransportCalendar";
-// Данные бронирований
+
 const data = [
   {
     id: "12345_rent_54321",
@@ -257,7 +257,6 @@ const data = [
 ];
 
 function App() {
-  // Calculate the start and end of the current month
   const today = new Date();
   const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -275,17 +274,14 @@ function App() {
 
   const handleSortChange = (sortBy: string) => {
     setSortBy(sortBy);
-    // Логика сортировки, если нужно
   };
 
   const handleFilterChange = (filterBy: string) => {
     setFilterBy(filterBy);
-    // Логика фильтрации, если нужно
   };
 
   const handleSearchChange = (searchValue: string) => {
     setSearchValue(searchValue);
-    // Логика фильтрации по поисковому запросу, если нужно
   };
 
   const handleDateRangeChange = (range: { startDate: Date; endDate: Date }) => {

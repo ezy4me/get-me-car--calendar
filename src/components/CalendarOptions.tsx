@@ -271,12 +271,11 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   return (
     <div className="container">
       <div className="calendar-options">
-        <div className="calendar-options-item">
+        <div className="calendar-options__item">
           <div
             className="calendar-icon"
             ref={calendarRef}
-            onMouseDown={handleCalendarClick}
-          >
+            onMouseDown={handleCalendarClick}>
             <IoCalendar
               size={24}
               className="calendar-icon"
@@ -295,87 +294,91 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                 />
               </div>
             )}
-            <div className="dateRange-container">
-              <p className="dateRange">
+            <div className="date-range-container">
+              <p className="date-range">
                 {dateRange.startDate.toLocaleDateString("ru-RU")}
               </p>
-              <p className="dateRange">
+              <p className="date-range">
                 {dateRange.endDate.toLocaleDateString("ru-RU")}
               </p>
             </div>
-          </div>
-          <div className="icon-dropdown">
-            <IoOptions
-              size={26}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="options-icon"
-            />
-            {isDropdownOpen && (
-              <div
-                className="dropdown-menu"
-                ref={dropdownRef}
-                onMouseDown={handleDropdownClick}>
-                <div className="dropdown-menu-list">
-                  <Select
-                    styles={customStyles}
-                    value={selectedFilter}
-                    onChange={handleFilterChange}
-                    options={filterOptions}
-                    placeholder="Статус ТС"
-                    isClearable
-                  />
-                  <Select
-                    styles={customStyles}
-                    value={selectedClassSort}
-                    onChange={handleSortChange("class")}
-                    options={sortOptions.filter(
-                      (option) => option.value === "class"
-                    )}
-                    placeholder="Класс ТС"
-                    isClearable
-                  />
-                  <Select
-                    styles={customStyles}
-                    value={selectedTypeSort}
-                    onChange={handleSortChange("type")}
-                    options={sortOptions.filter(
-                      (option) => option.value === "type"
-                    )}
-                    placeholder="Тип ТС"
-                    isClearable
-                  />
-                  <Select
-                    styles={customStyles}
-                    value={selectedIdSort}
-                    onChange={handleSortChange("id")}
-                    options={sortOptions.filter(
-                      (option) => option.value === "id"
-                    )}
-                    placeholder="ID ТС"
-                    isClearable
-                  />
-                  <Select
-                    styles={customStyles}
-                    value={selectedNearestBookingSort}
-                    onChange={handleSortChange("nearestBooking")}
-                    options={sortOptions.filter(
-                      (option) => option.value === "nearestBooking"
-                    )}
-                    placeholder="Бронирование"
-                    isClearable
-                  />
+
+            <div className="icon-dropdown">
+              <IoOptions
+                size={26}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="options-icon"
+              />
+              {isDropdownOpen && (
+                <div
+                  className="dropdown-menu"
+                  ref={dropdownRef}
+                  onMouseDown={handleDropdownClick}>
+                  <div className="dropdown-menu-list">
+                    <Select
+                      styles={customStyles}
+                      value={selectedFilter}
+                      onChange={handleFilterChange}
+                      options={filterOptions}
+                      placeholder="Статус ТС"
+                      isClearable
+                    />
+                    <Select
+                      styles={customStyles}
+                      value={selectedClassSort}
+                      onChange={handleSortChange("class")}
+                      options={sortOptions.filter(
+                        (option) => option.value === "class"
+                      )}
+                      placeholder="Класс ТС"
+                      isClearable
+                    />
+                    <Select
+                      styles={customStyles}
+                      value={selectedTypeSort}
+                      onChange={handleSortChange("type")}
+                      options={sortOptions.filter(
+                        (option) => option.value === "type"
+                      )}
+                      placeholder="Тип ТС"
+                      isClearable
+                    />
+                    <Select
+                      styles={customStyles}
+                      value={selectedIdSort}
+                      onChange={handleSortChange("id")}
+                      options={sortOptions.filter(
+                        (option) => option.value === "id"
+                      )}
+                      placeholder="ID ТС"
+                      isClearable
+                    />
+                    <Select
+                      styles={customStyles}
+                      value={selectedNearestBookingSort}
+                      onChange={handleSortChange("nearestBooking")}
+                      options={sortOptions.filter(
+                        (option) => option.value === "nearestBooking"
+                      )}
+                      placeholder="Бронирование"
+                      isClearable
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-        <div className="search-bar">
-          <IoSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="Поиск транспорта"
-            onChange={handleSearchChange}
-          />
+
+        <div className="calendar-options__item">
+          <div className="search-bar">
+            <IoSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Поиск транспорта"
+              onChange={handleSearchChange}
+            />
+          </div>
         </div>
       </div>
     </div>
