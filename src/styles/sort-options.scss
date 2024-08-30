@@ -34,7 +34,7 @@
     padding-left: 36px;
     font-size: 16px;
     border-radius: 8px;
-    border: 2px solid #ddd;
+    border: 2px solid #e6e9f1;
     width: 100%;
 
     transition: border-color 0.3s ease;
@@ -65,7 +65,7 @@
     top: 100%;
     right: 0;
     background: white;
-    border: 1px solid #ddd;
+    border: 1px solid #e6e9f1;
     border-radius: 8px;
     padding: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
@@ -91,7 +91,7 @@
 
     p {
         margin: 0;
-        background: #0077ff;
+        background: #fff;
         padding: 6px 12px;
         border-radius: 8px;
         font-size: 16px;
@@ -110,12 +110,13 @@
 }
 
 .date-range {
-    color: white;
+    color: #161616;
+    border: 2px solid #e6e9f1;
 }
 
 .date-range-container {
     display: flex;
-    gap: 4px;
+    gap: 12px;
 }
 
 @media (max-width: 800px) {

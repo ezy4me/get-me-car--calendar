@@ -249,7 +249,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
     control: (baseStyles, state) => ({
       ...baseStyles,
       borderRadius: 8,
-      borderColor: state.isFocused ? "#429cf3" : "#ddd",
+      borderColor: state.isFocused ? "#429cf3" : "#e6e9f1",
       boxShadow: state.isFocused ? "0 0 0 1px #429cf3" : "none",
       "&:hover": {
         borderColor: "#429cf3",
@@ -295,7 +295,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                 />
               </div>
             )}
-            <div className="date-range-container">
+            <div className="date-range-container" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
               <p className="date-range">
                 {dateRange.startDate.toLocaleDateString("ru-RU")}
               </p>
