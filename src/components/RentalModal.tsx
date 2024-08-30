@@ -38,9 +38,16 @@ const RentalModal: React.FC<RentalModalProps> = ({
     email: rent.email,
     phone: rent.tel,
     additionalPhone: rent.tel_2,
-    telegram: rent.socials?.Telegram || false,
-    whatsapp: rent.socials?.Whatsapp || false,
-    viber: rent.socials?.Viber || false,
+    telegram:
+      rent.socials && rent.socials[0]
+        ? rent.socials[0].Telegram || false
+        : false,
+    whatsapp:
+      rent.socials && rent.socials[0]
+        ? rent.socials[0].Whatsapp || false
+        : false,
+    viber:
+      rent.socials && rent.socials[0] ? rent.socials[0].Viber || false : false,
     coefficient: rent.payment_koeff.toFixed(2) || 0,
     amountDue: rent.payable.toFixed(2) || 0,
     currency: rent.currency || "",

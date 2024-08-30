@@ -122,12 +122,14 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
   );
 
   const handleFinishSelection: TFinishSelectionCallback = (items) => {
-    const selectedDates = items.map(
-      (item) => dates[parseInt(item.getAttribute("data-id") || "")]
-    );
+    // Получаем даты из атрибутов `data-date`
+    const selectedDates = items
+      .map((item) => item.getAttribute("data-date") || "")
+      .filter((date) => date !== "");
 
     setSelectedRange(selectedDates);
 
+    // Получаем идентификаторы строк из атрибутов `data-row`
     const selectedRows = Array.from(
       new Set(
         items.map((item) => parseInt(item.getAttribute("data-row") || ""))
@@ -168,6 +170,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
       }
     }
 
+    // Устанавливаем выделенные заголовки
     const selectedHeaders = items.map((item) =>
       parseInt(item.getAttribute("data-id") || "0", 10)
     );
@@ -221,6 +224,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
                 className="cell"
                 data-id={colIndex.toString()}
                 data-row={vehical.id.toString()}
+                data-date={dates[colIndex]}
               />
             );
             colIndex++;
@@ -265,6 +269,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
               className="cell"
               data-id={colIndex.toString()}
               data-row={vehical.id.toString()}
+              data-date={dates[colIndex]}
             />
           );
         }
@@ -298,7 +303,8 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
                     highlightedHeaders.includes(index)
                       ? "highlighted-header"
                       : ""
-                  }>
+                  }
+                  data-date={date}>
                   {new Date(date).toLocaleDateString("ru-RU").substring(0, 5)}
                 </th>
               ))}

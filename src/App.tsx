@@ -6,8 +6,8 @@ const vehicals = [
   {
     id: 12345678,
     name: "Kia Optima",
-    type: "car|passenger|truck|moto|air|water|etc...",
-    class: "premium|cabriolete|etc...",
+    type: "car",
+    class: "premium",
     brand: "kia",
     model: "optima",
     engine_type: "diesel",
@@ -50,8 +50,8 @@ const vehicals = [
   {
     id: 87654321,
     name: "Land Rover Discovery",
-    type: "car|passenger|truck|moto|air|water|etc...",
-    class: "premium|cabriolete|etc...",
+    type: "truck",
+    class: "premium",
     brand: "Land Rover",
     model: "Discovery",
     engine_type: "diesel",
@@ -125,7 +125,6 @@ function App() {
     setDateRange(range);
   };
 
-  // Filtering and displaying vehicles within the date range
   const filteredVehicals = vehicals.map((vehical) => {
     const filteredRents = vehical.rents.filter((rent) => {
       const itemStartDate = new Date(rent.start_date);

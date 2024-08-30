@@ -130,6 +130,7 @@ const customStaticRanges: StaticRange[] = [
     },
   },
 ];
+
 const isSameDay = (date1?: Date, date2?: Date) => {
   if (!date1 || !date2) return false;
   return date1.toDateString() === date2.toDateString();
@@ -302,82 +303,83 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                 {dateRange.endDate.toLocaleDateString("ru-RU")}
               </p>
             </div>
-
-            <div className="icon-dropdown">
-              <IoOptions
-                size={26}
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="options-icon"
-              />
-              {isDropdownOpen && (
-                <div
-                  className="dropdown-menu"
-                  ref={dropdownRef}
-                  onMouseDown={handleDropdownClick}>
-                  <div className="dropdown-menu-list">
-                    <Select
-                      styles={customStyles}
-                      value={selectedFilter}
-                      onChange={handleFilterChange}
-                      options={filterOptions}
-                      placeholder="Статус ТС"
-                      isClearable
-                    />
-                    <Select
-                      styles={customStyles}
-                      value={selectedClassSort}
-                      onChange={handleSortChange("class")}
-                      options={sortOptions.filter(
-                        (option) => option.value === "class"
-                      )}
-                      placeholder="Класс ТС"
-                      isClearable
-                    />
-                    <Select
-                      styles={customStyles}
-                      value={selectedTypeSort}
-                      onChange={handleSortChange("type")}
-                      options={sortOptions.filter(
-                        (option) => option.value === "type"
-                      )}
-                      placeholder="Тип ТС"
-                      isClearable
-                    />
-                    <Select
-                      styles={customStyles}
-                      value={selectedIdSort}
-                      onChange={handleSortChange("id")}
-                      options={sortOptions.filter(
-                        (option) => option.value === "id"
-                      )}
-                      placeholder="ID ТС"
-                      isClearable
-                    />
-                    <Select
-                      styles={customStyles}
-                      value={selectedNearestBookingSort}
-                      onChange={handleSortChange("nearestBooking")}
-                      options={sortOptions.filter(
-                        (option) => option.value === "nearestBooking"
-                      )}
-                      placeholder="Бронирование"
-                      isClearable
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
         </div>
-
         <div className="calendar-options__item">
-          <div className="search-bar">
-            <IoSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Поиск транспорта"
-              onChange={handleSearchChange}
+          <div className="calendar-options__item">
+            <div className="search-bar">
+              <IoSearch className="search-icon" />
+              <input
+                type="text"
+                placeholder="Поиск транспорта"
+                onChange={handleSearchChange}
+              />
+            </div>
+          </div>
+
+          <div className="icon-dropdown">
+            <IoOptions
+              size={26}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="options-icon"
             />
+            {isDropdownOpen && (
+              <div
+                className="dropdown-menu"
+                ref={dropdownRef}
+                onMouseDown={handleDropdownClick}>
+                <div className="dropdown-menu-list">
+                  <Select
+                    styles={customStyles}
+                    value={selectedFilter}
+                    onChange={handleFilterChange}
+                    options={filterOptions}
+                    placeholder="Статус ТС"
+                    isClearable
+                  />
+                  <Select
+                    styles={customStyles}
+                    value={selectedClassSort}
+                    onChange={handleSortChange("class")}
+                    options={sortOptions.filter(
+                      (option) => option.value === "class"
+                    )}
+                    placeholder="Класс ТС"
+                    isClearable
+                  />
+                  <Select
+                    styles={customStyles}
+                    value={selectedTypeSort}
+                    onChange={handleSortChange("type")}
+                    options={sortOptions.filter(
+                      (option) => option.value === "type"
+                    )}
+                    placeholder="Тип ТС"
+                    isClearable
+                  />
+                  <Select
+                    styles={customStyles}
+                    value={selectedIdSort}
+                    onChange={handleSortChange("id")}
+                    options={sortOptions.filter(
+                      (option) => option.value === "id"
+                    )}
+                    placeholder="ID ТС"
+                    isClearable
+                  />
+                  <Select
+                    styles={customStyles}
+                    value={selectedNearestBookingSort}
+                    onChange={handleSortChange("nearestBooking")}
+                    options={sortOptions.filter(
+                      (option) => option.value === "nearestBooking"
+                    )}
+                    placeholder="Бронирование"
+                    isClearable
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
