@@ -254,6 +254,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
             rent={rent}
             colSpan={adjustedColSpan}
             index={index}
+            rowSpan={1}
             rowIndex={rowIndex}
             isContinuous={
               index > 0 &&
@@ -302,9 +303,19 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
 
   const bookingMatrix = createBookingMatrix();
 
+  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (containerRef.current) {
+      containerRef.current.scrollLeft += event.deltaY; // Изменяет горизонтальное скроллирование
+      event.preventDefault(); // Предотвращает стандартное поведение прокрутки
+    }
+  };
+
   return (
     <>
-      <main className="calendar-container container" ref={containerRef}>
+      <main
+        className="calendar-container container"
+        ref={containerRef}
+        onWheel={handleWheel}>
         <table className="transport-calendar">
           <thead>
             <tr>

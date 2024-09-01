@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CalendarOptions from "./components/CalendarOptions";
 import TransportCalendar from "./components/TransportCalendar";
+import TransportCalendarMobile from "./components/TransportCalendarMobile";
 
 // Определение типов
 interface Rent {
@@ -189,6 +190,18 @@ function App() {
     endDate: maxDate || endOfMonth,
   });
 
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mediaQuery.matches);
+
+    const handleResize = () => setIsMobile(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", handleResize);
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
+
   const handleSortChange = (sortBy: string) => {
     setSortBy(sortBy);
   };
@@ -232,7 +245,11 @@ function App() {
           endDate: maxDate || endOfMonth,
         }}
       />
-      <TransportCalendar vehicals={filteredVehicles} />
+      {isMobile ? (
+        <TransportCalendarMobile vehicals={filteredVehicles} />
+      ) : (
+        <TransportCalendar vehicals={filteredVehicles} />
+      )}
     </div>
   );
 }

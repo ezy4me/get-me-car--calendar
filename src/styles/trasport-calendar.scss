@@ -2,6 +2,13 @@
     height: calc(100vh - 120px);
 }
 
+.mobile-calendar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
 .transport-calendar {
     border-collapse: separate;
     border-spacing: 0;
@@ -14,6 +21,10 @@
 .transport-calendar thead th,
 .transport-calendar tbody td {
     text-align: center;
+}
+
+.transport-calendar thead {
+    background: #429cf3;
 }
 
 .transport-calendar thead th {
@@ -30,11 +41,6 @@
 
 .transport-calendar thead tr th:first-child {
     border-radius: 8px 0 0 0;
-    min-width: 240px;
-}
-
-.transport-calendar thead tr th:last-child {
-    border-radius: 0 8px 0 0;
 }
 
 .transport-calendar {
@@ -49,6 +55,7 @@
 
 .transport-calendar tbody td:first-child {
     border-left: 0;
+    min-width: 240px;
 }
 
 .transport-calendar tbody td:nth-child(2) {

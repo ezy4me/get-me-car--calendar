@@ -40,6 +40,16 @@ export const calculateColSpan = (
   return endIndex - startIndex + 1;
 };
 
+export const calculateRowSpan = (
+  startDate: string,
+  endDate: string,
+  dates: string[]
+): number => {
+  const startIndex = dates.indexOf(startDate);
+  const endIndex = dates.indexOf(endDate);
+  return endIndex - startIndex + 1;
+};
+
 export const isDateInRange = (
   date: string,
   start: string,

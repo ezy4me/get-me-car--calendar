@@ -8,9 +8,7 @@ const getRentStyle = (rent: any, rowIndex: number, index: number): any => {
     ? evenRowColors[rent.status] || evenRowColors["rent"]
     : oddRowColors[rent.status] || oddRowColors["rent"];
 
-    const color = isEvenRow
-    ? '#000'
-    : '#fff'
+  const color = isEvenRow ? '#000' : '#fff';
 
   const shadeIndex = index % bgColors.length;
   const selectedColor = bgColors[shadeIndex];
@@ -24,6 +22,7 @@ const getRentStyle = (rent: any, rowIndex: number, index: number): any => {
 interface BookingCellProps {
   rent: any | null;
   colSpan: number;
+  rowSpan: number;
   index: number;
   rowIndex: number;
   isStart?: boolean;
@@ -35,6 +34,7 @@ interface BookingCellProps {
 const BookingCell: React.FC<BookingCellProps> = ({
   rent,
   colSpan,
+  rowSpan,
   index,
   rowIndex,
   isStart,
@@ -57,7 +57,9 @@ const BookingCell: React.FC<BookingCellProps> = ({
       onClick={onClick}
       className="booking-cell"
       style={style}
-      colSpan={colSpan}>
+      colSpan={colSpan}
+      rowSpan={rowSpan}
+    >
       {isContinuous && (
         <div
           className="is-continuous"
