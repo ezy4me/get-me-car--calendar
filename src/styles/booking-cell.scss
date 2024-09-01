@@ -29,12 +29,13 @@
 
 .booking-cell:hover {
     opacity: 0.8;
-}
-
-.booking-cell:hover .is-continuous {
-    opacity: 0.8;
     pointer-events: auto;
 }
+
+.is-continuous:hover {
+    opacity: inherit;
+}
+
 .booking-cell,
 .cell {
     position: relative;
@@ -47,6 +48,10 @@
 .booking-cell.selected,
 .cell.selected {
     background: #adf;
+}
+
+.cell--disabled {
+    background: transparent;
 }
 
 .selected {

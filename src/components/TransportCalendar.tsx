@@ -82,35 +82,27 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
     };
   }, []);
 
-  const hasBookings = vehicals.some((vehical) => vehical.rents.length > 0);
-
-  if (!vehicals || vehicals.length === 0 || !hasBookings) {
-    return (
-      <div className="calendar-container container no-data-placeholder">
-        <p>Данных о бронированиях нет</p>
-        <button
-          className="btn"
-          onClick={() => alert("Редирект на форму добавления транспорта")}>
-          Добавить транспорт
-        </button>
-      </div>
-    );
-  }
-
-  const extractNumericId = (id: number) => id;
-
   const { minDate, maxDate } = getMinMaxDates(
     vehicals.flatMap((vehical) => vehical.rents)
   );
 
-  const minDateStr = minDate.toISOString().split("T")[0];
-  const maxDateStr = maxDate.toISOString().split("T")[0];
-  const dates: string[] = generateDateRange(minDateStr, maxDateStr);
+  const validDate = (date: Date): boolean => !isNaN(date.getTime());
+
+  const minDateStr = validDate(minDate)
+    ? minDate.toISOString().split("T")[0]
+    : "";
+  const maxDateStr = validDate(maxDate)
+    ? maxDate.toISOString().split("T")[0]
+    : "";
+  const dates: string[] =
+    validDate(minDate) && validDate(maxDate)
+      ? generateDateRange(minDateStr, maxDateStr)
+      : [];
 
   const groupedBookings = vehicals.reduce<Record<number, Booking[]>>(
     (acc, vehical) => {
       vehical.rents.forEach((rent: any) => {
-        const numericId = extractNumericId(vehical.id);
+        const numericId = vehical.id;
         if (!acc[numericId]) {
           acc[numericId] = [];
         }
@@ -122,14 +114,12 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
   );
 
   const handleFinishSelection: TFinishSelectionCallback = (items) => {
-    // Получаем даты из атрибутов `data-date`
     const selectedDates = items
       .map((item) => item.getAttribute("data-date") || "")
       .filter((date) => date !== "");
 
     setSelectedRange(selectedDates);
 
-    // Получаем идентификаторы строк из атрибутов `data-row`
     const selectedRows = Array.from(
       new Set(
         items.map((item) => parseInt(item.getAttribute("data-row") || ""))
@@ -170,7 +160,6 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
       }
     }
 
-    // Устанавливаем выделенные заголовки
     const selectedHeaders = items.map((item) =>
       parseInt(item.getAttribute("data-id") || "0", 10)
     );
@@ -195,6 +184,27 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
     setVehicle(vehicle);
   };
 
+  const handleOpenRentalForm = (vehicle: {
+    id: number;
+    name: string;
+    type: string;
+    class: string;
+    brand: string;
+    model: string;
+    engine_type: string;
+    edit_url: string;
+  }) => {
+    const defaultRent = {
+      start_date: new Date().toISOString().split("T")[0] + "T09:00:00",
+      end_date: new Date().toISOString().split("T")[0] + "T18:00:00",
+      payment_koeff: 0,
+      payable: 0,
+    };
+
+    setSelectedRent(defaultRent);
+    setVehicle(vehicle);
+  };
+
   const createBookingMatrix = () => {
     const matrix: {
       transportName: string;
@@ -203,7 +213,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
       cells: JSX.Element[];
     }[] = [];
 
-    vehicals.forEach((vehical) => {
+    vehicals.forEach((vehical, rowIndex) => {
       const row: JSX.Element[] = [];
       const relevantBookings = vehical.rents;
       const occupiedColumns = new Array(dates.length).fill(0);
@@ -211,8 +221,8 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
       let colIndex = 0;
 
       relevantBookings.forEach((rent, index) => {
-        const startDate = rent.start_date.split("T")[0];
-        const endDate = rent.end_date.split("T")[0];
+        const startDate = new Date(rent.start_date).toISOString().split("T")[0];
+        const endDate = new Date(rent.end_date).toISOString().split("T")[0];
         const colSpan = calculateColSpan(startDate, endDate, dates);
         const startCol = dates.indexOf(startDate);
 
@@ -244,9 +254,12 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
             rent={rent}
             colSpan={adjustedColSpan}
             index={index}
+            rowIndex={rowIndex}
             isContinuous={
               index > 0 &&
-              relevantBookings[index - 1].end_date.split("T")[0] === startDate
+              new Date(relevantBookings[index - 1].end_date)
+                .toISOString()
+                .split("T")[0] === startDate
             }
             onClick={() => handleVehicleInfo(rent, vehical)}
           />
@@ -301,8 +314,8 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
                   key={index}
                   className={
                     highlightedHeaders.includes(index)
-                      ? "highlighted-header"
-                      : ""
+                      ? "highlighted-header date-cell"
+                      : "date-cell"
                   }
                   data-date={date}>
                   {new Date(date).toLocaleDateString("ru-RU").substring(0, 5)}
@@ -311,21 +324,45 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
             </tr>
           </thead>
           <tbody>
-            {bookingMatrix.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                <td
-                  className={
-                    highlightedRows.includes(row.transportId)
-                      ? "highlighted-transport"
-                      : ""
-                  }>
-                  <a className="link" href={row.transportEditUrl}>
-                    {row.transportName || ""}
-                  </a>
+            {bookingMatrix.length > 0 ? (
+              bookingMatrix.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  <td
+                    className={
+                      highlightedRows.includes(row.transportId)
+                        ? "highlighted-transport"
+                        : ""
+                    }>
+                    <button
+                      className="btn transport-btn-icon"
+                      onClick={() =>
+                        handleOpenRentalForm({
+                          id: row.transportId,
+                          name: row.transportName,
+                          type: "",
+                          class: "",
+                          brand: "",
+                          model: "",
+                          engine_type: "",
+                          edit_url: row.transportEditUrl,
+                        })
+                      }>
+                      <IoAddCircle size={32} />
+                    </button>
+                    <a className="link" href={row.transportEditUrl}>
+                      {row.transportName || ""}
+                    </a>
+                  </td>
+                  {row.cells}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td className="cell" colSpan={dates.length + 1}>
+                  Нет данных о бронированиях, но машины отображаются
                 </td>
-                {row.cells}
               </tr>
-            ))}
+            )}
             <tr>
               <td className="cell">
                 <button
@@ -342,7 +379,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
               {Array(dates.length)
                 .fill(null)
                 .map((_, index) => (
-                  <td key={`empty-${index}`} className="cell" />
+                  <td key={`empty-${index}`} className="cell--disabled" />
                 ))}
             </tr>
           </tbody>

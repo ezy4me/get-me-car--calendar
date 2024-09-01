@@ -25,7 +25,7 @@
 
 .container {
     width: 100%;
-    max-width: 1400px;
+    max-width: 100%;
     margin: 0 auto;
     border-radius: 8px;
 }
@@ -45,6 +45,10 @@
     transition:
         background-color 0.2s ease,
         border-color 0.2s ease;
+
+    &--outlined {
+        border: 1px solid #fff;
+    }
 }
 
 .btn:hover {

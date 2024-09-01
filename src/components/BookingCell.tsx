@@ -1,37 +1,48 @@
 import React from "react";
-import { statusColors } from "../utils/colorUtils";
+import { oddRowColors, evenRowColors } from "../utils/colorUtils";
 
-const getrentStyle = (rent: any, index: number): any => {
-  const colors = statusColors[rent.status] || statusColors["rent"];
-  const shadeIndex = index % colors.length;
-  const selectedColor = colors[shadeIndex];
+const getRentStyle = (rent: any, rowIndex: number, index: number): any => {
+  const isEvenRow = rowIndex % 2 === 0;
+
+  const bgColors = isEvenRow
+    ? evenRowColors[rent.status] || evenRowColors["rent"]
+    : oddRowColors[rent.status] || oddRowColors["rent"];
+
+    const color = isEvenRow
+    ? '#000'
+    : '#fff'
+
+  const shadeIndex = index % bgColors.length;
+  const selectedColor = bgColors[shadeIndex];
 
   return {
     background: selectedColor,
-    color: "#000",
+    color: color,
   };
 };
 
-interface rentCellProps {
+interface BookingCellProps {
   rent: any | null;
   colSpan: number;
   index: number;
+  rowIndex: number;
   isStart?: boolean;
   isEnd?: boolean;
   isContinuous?: boolean;
   onClick: () => void;
 }
 
-const rentCell: React.FC<rentCellProps> = ({
+const BookingCell: React.FC<BookingCellProps> = ({
   rent,
   colSpan,
   index,
+  rowIndex,
   isStart,
   isEnd,
   isContinuous,
   onClick,
 }) => {
-  const style = rent ? getrentStyle(rent, index) : {};
+  const style = rent ? getRentStyle(rent, rowIndex, index) : {};
 
   const rentRange = rent
     ? `${new Date(rent.start_date)
@@ -42,7 +53,11 @@ const rentCell: React.FC<rentCellProps> = ({
     : "";
 
   return (
-    <td onClick={onClick} className="booking-cell" style={style} colSpan={colSpan}>
+    <td
+      onClick={onClick}
+      className="booking-cell"
+      style={style}
+      colSpan={colSpan}>
       {isContinuous && (
         <div
           className="is-continuous"
@@ -54,4 +69,4 @@ const rentCell: React.FC<rentCellProps> = ({
   );
 };
 
-export default rentCell;
+export default BookingCell;

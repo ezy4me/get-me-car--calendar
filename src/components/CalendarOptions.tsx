@@ -20,35 +20,35 @@ interface CalendarOptionsProps {
 }
 
 const customStaticRanges: StaticRange[] = [
-  {
-    label: "Сегодня",
-    range: () => ({
-      startDate: new Date(),
-      endDate: new Date(),
-    }),
-    isSelected: (range) =>
-      isSameDay(range.startDate, new Date()) &&
-      isSameDay(range.endDate, new Date()),
-  },
-  {
-    label: "Вчера",
-    range: () => {
-      const today = new Date();
-      const yesterday = new Date(today.setDate(today.getDate() - 1));
-      return {
-        startDate: yesterday,
-        endDate: yesterday,
-      };
-    },
-    isSelected: (range) => {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      return (
-        isSameDay(range.startDate, yesterday) &&
-        isSameDay(range.endDate, yesterday)
-      );
-    },
-  },
+  // {
+  //   label: "Сегодня",
+  //   range: () => ({
+  //     startDate: new Date(),
+  //     endDate: new Date(),
+  //   }),
+  //   isSelected: (range) =>
+  //     isSameDay(range.startDate, new Date()) &&
+  //     isSameDay(range.endDate, new Date()),
+  // },
+  // {
+  //   label: "Вчера",
+  //   range: () => {
+  //     const today = new Date();
+  //     const yesterday = new Date(today.setDate(today.getDate() - 1));
+  //     return {
+  //       startDate: yesterday,
+  //       endDate: yesterday,
+  //     };
+  //   },
+  //   isSelected: (range) => {
+  //     const yesterday = new Date();
+  //     yesterday.setDate(yesterday.getDate() - 1);
+  //     return (
+  //       isSameDay(range.startDate, yesterday) &&
+  //       isSameDay(range.endDate, yesterday)
+  //     );
+  //   },
+  // },
   {
     label: "Эта неделя",
     range: () => {
@@ -135,7 +135,6 @@ const isSameDay = (date1?: Date, date2?: Date) => {
   if (!date1 || !date2) return false;
   return date1.toDateString() === date2.toDateString();
 };
-
 const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   onSortChange,
   onFilterChange,
@@ -159,13 +158,16 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
+  const dropdownIconRef = useRef<HTMLDivElement | any>(null);
+  const calendarIconRef = useRef<HTMLDivElement | any>(null);
+
   const today = new Date();
   const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
   const [dateRange, setDateRange] = useState({
-    startDate: startOfMonth,
-    endDate: endOfMonth,
+    startDate: defaultDateRange.startDate || startOfMonth,
+    endDate: defaultDateRange.endDate || endOfMonth,
     key: "selection",
   });
 
@@ -211,20 +213,40 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   };
 
   const handleDateRangeChange = (ranges: any) => {
-    setDateRange(ranges.selection);
-    onDateRangeChange(ranges.selection);
+    const { startDate, endDate } = ranges.selection;
+
+    if (startDate) {
+      const calculatedEndDate = endDate
+        ? new Date(endDate)
+        : new Date(startDate);
+      if (!endDate) {
+        calculatedEndDate.setDate(startDate.getDate() + 7);
+      }
+
+      const newDateRange = {
+        startDate: new Date(startDate),
+        endDate: calculatedEndDate,
+        key: "selection",
+      };
+
+      setDateRange(newDateRange);
+      onDateRangeChange(newDateRange);
+    }
   };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
       calendarRef.current &&
-      !calendarRef.current.contains(event.target as Node)
+      !calendarRef.current.contains(event.target as Node) &&
+      !event.composedPath().includes(calendarIconRef.current)
     ) {
       setIsCalendarOpen(false);
     }
+
     if (
       dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
+      !dropdownRef.current.contains(event.target as Node) &&
+      !event.composedPath().includes(dropdownIconRef.current)
     ) {
       setIsDropdownOpen(false);
     }
@@ -238,11 +260,11 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   }, []);
 
   const handleCalendarClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent click from closing the calendar
+    e.stopPropagation();
   };
 
   const handleDropdownClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent click from closing the dropdown
+    e.stopPropagation();
   };
 
   const customStyles: StylesConfig<SortOption, false> = {
@@ -288,6 +310,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                   locale={ru}
                   ranges={[dateRange]}
                   inputRanges={[]}
+                  weekdayDisplayFormat={"EEEEEE"}
                   staticRanges={customStaticRanges}
                   onChange={handleDateRangeChange}
                   moveRangeOnFirstSelection={false}
@@ -295,7 +318,9 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                 />
               </div>
             )}
-            <div className="date-range-container" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
+            <div
+              className="date-range-container"
+              onClick={() => setIsCalendarOpen((prev) => !prev)}>
               <p className="date-range">
                 {dateRange.startDate.toLocaleDateString("ru-RU")}
               </p>
@@ -306,81 +331,82 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
           </div>
         </div>
         <div className="calendar-options__item">
-          <div className="calendar-options__item">
-            <div className="search-bar">
-              <IoSearch className="search-icon" />
-              <input
-                type="text"
-                placeholder="Поиск транспорта"
-                onChange={handleSearchChange}
-              />
-            </div>
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Поиск транспорта"
+              onChange={handleSearchChange}
+            />
+            <button className="search-button">
+              <IoSearch size={24} />
+            </button>
           </div>
 
-          <div className="icon-dropdown">
+          <div className="icon-dropdown" ref={dropdownIconRef}>
             <IoOptions
               size={26}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
               className="options-icon"
             />
-            {isDropdownOpen && (
-              <div
-                className="dropdown-menu"
-                ref={dropdownRef}
-                onMouseDown={handleDropdownClick}>
-                <div className="dropdown-menu-list">
-                  <Select
-                    styles={customStyles}
-                    value={selectedFilter}
-                    onChange={handleFilterChange}
-                    options={filterOptions}
-                    placeholder="Статус ТС"
-                    isClearable
-                  />
-                  <Select
-                    styles={customStyles}
-                    value={selectedClassSort}
-                    onChange={handleSortChange("class")}
-                    options={sortOptions.filter(
-                      (option) => option.value === "class"
-                    )}
-                    placeholder="Класс ТС"
-                    isClearable
-                  />
-                  <Select
-                    styles={customStyles}
-                    value={selectedTypeSort}
-                    onChange={handleSortChange("type")}
-                    options={sortOptions.filter(
-                      (option) => option.value === "type"
-                    )}
-                    placeholder="Тип ТС"
-                    isClearable
-                  />
-                  <Select
-                    styles={customStyles}
-                    value={selectedIdSort}
-                    onChange={handleSortChange("id")}
-                    options={sortOptions.filter(
-                      (option) => option.value === "id"
-                    )}
-                    placeholder="ID ТС"
-                    isClearable
-                  />
-                  <Select
-                    styles={customStyles}
-                    value={selectedNearestBookingSort}
-                    onChange={handleSortChange("nearestBooking")}
-                    options={sortOptions.filter(
-                      (option) => option.value === "nearestBooking"
-                    )}
-                    placeholder="Бронирование"
-                    isClearable
-                  />
-                </div>
-              </div>
-            )}
           </div>
+
+          {isDropdownOpen && (
+            <div
+              className="dropdown-menu"
+              ref={dropdownRef}
+              onMouseDown={handleDropdownClick}>
+              <div className="dropdown-menu-list">
+                <Select
+                  styles={customStyles}
+                  value={selectedFilter}
+                  onChange={handleFilterChange}
+                  options={filterOptions}
+                  placeholder="Статус ТС"
+                  isClearable
+                />
+                <Select
+                  styles={customStyles}
+                  value={selectedClassSort}
+                  onChange={handleSortChange("class")}
+                  options={sortOptions.filter(
+                    (option) => option.value === "class"
+                  )}
+                  placeholder="Класс ТС"
+                  isClearable
+                />
+                <Select
+                  styles={customStyles}
+                  value={selectedTypeSort}
+                  onChange={handleSortChange("type")}
+                  options={sortOptions.filter(
+                    (option) => option.value === "type"
+                  )}
+                  placeholder="Тип ТС"
+                  isClearable
+                />
+                <Select
+                  styles={customStyles}
+                  value={selectedIdSort}
+                  onChange={handleSortChange("id")}
+                  options={sortOptions.filter(
+                    (option) => option.value === "id"
+                  )}
+                  placeholder="ID ТС"
+                  isClearable
+                />
+                <Select
+                  styles={customStyles}
+                  value={selectedNearestBookingSort}
+                  onChange={handleSortChange("nearestBooking")}
+                  options={sortOptions.filter(
+                    (option) => option.value === "nearestBooking"
+                  )}
+                  placeholder="Бронирование"
+                  isClearable
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
