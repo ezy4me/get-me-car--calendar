@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface RentalFormProps {
   formData: any;
@@ -11,6 +12,8 @@ const RentalForm: React.FC<RentalFormProps> = ({
   setFormData,
   onSubmit,
 }) => {
+  const { t } = useTranslation();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = e.target;
     setFormData((prev: any) => ({
@@ -29,12 +32,11 @@ const RentalForm: React.FC<RentalFormProps> = ({
       },
     }));
   };
-
   return (
     <form onSubmit={onSubmit} className="rental-form">
       <div className="rental-form__row">
         <div className="rental-form__col">
-          <label className="rental-form__label">Дата получения</label>
+          <label className="rental-form__label">{t("pickup_date")}</label>
           <input
             type="date"
             name="pickupDate"
@@ -45,7 +47,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
           />
         </div>
         <div className="rental-form__col">
-          <label className="rental-form__label">Дата возврата</label>
+          <label className="rental-form__label">{t("return_date")}</label>
           <input
             type="date"
             name="returnDate"
@@ -59,7 +61,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
 
       <div className="rental-form__row">
         <div className="rental-form__col">
-          <label className="rental-form__label">Время получения</label>
+          <label className="rental-form__label">{t("pickup_time")}</label>
           <input
             type="time"
             name="pickupTime"
@@ -70,7 +72,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
           />
         </div>
         <div className="rental-form__col">
-          <label className="rental-form__label">Время возврата</label>
+          <label className="rental-form__label">{t("return_time")}</label>
           <input
             type="time"
             name="returnTime"
@@ -84,7 +86,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
 
       <div className="rental-form__row">
         <div className="rental-form__col">
-          <label className="rental-form__label">Локация</label>
+          <label className="rental-form__label">{t("location")}</label>
           <input
             type="text"
             name="location"
@@ -98,7 +100,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
 
       <div className="rental-form__row">
         <div className="rental-form__col">
-          <label className="rental-form__label">Страна</label>
+          <label className="rental-form__label">{t("country")}</label>
           <input
             type="text"
             name="country"
@@ -109,7 +111,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
           />
         </div>
         <div className="rental-form__col">
-          <label className="rental-form__label">Город</label>
+          <label className="rental-form__label">{t("city")}</label>
           <input
             type="text"
             name="city"
@@ -123,7 +125,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
 
       <div className="rental-form__row">
         <div className="rental-form__col">
-          <label className="rental-form__label">Клиент</label>
+          <label className="rental-form__label">{t("client")}</label>
           <input
             type="text"
             name="clientName"
@@ -137,7 +139,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
 
       <div className="rental-form__row">
         <div className="rental-form__col">
-          <label className="rental-form__label">Email</label>
+          <label className="rental-form__label">{t("email")}</label>
           <input
             type="email"
             name="email"
@@ -148,7 +150,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
           />
         </div>
         <div className="rental-form__col">
-          <label className="rental-form__label">Телефон</label>
+          <label className="rental-form__label">{t("phone")}</label>
           <input
             type="tel"
             name="phone"
@@ -170,7 +172,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
               onChange={handleChange}
               className="rental-form__checkbox"
             />
-            Telegram
+            {t("telegram")}
           </label>
           <label className="rental-form__label rental-form__label--checkbox">
             <input
@@ -180,7 +182,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
               onChange={handleChange}
               className="rental-form__checkbox"
             />
-            WhatsApp
+            {t("whatsapp")}
           </label>
           <label className="rental-form__label rental-form__label--checkbox">
             <input
@@ -190,7 +192,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
               onChange={handleChange}
               className="rental-form__checkbox"
             />
-            Viber
+            {t("viber")}
           </label>
         </div>
         <div className="rental-form__col">
@@ -200,13 +202,13 @@ const RentalForm: React.FC<RentalFormProps> = ({
             value={formData.additionalPhone}
             onChange={handleChange}
             className="rental-form__input"
-            placeholder="Доп. Телефон"
+            placeholder={t("additional_phone")}
           />
         </div>
       </div>
 
       <div className="rental-form__row">
-        <label className="rental-form__label">Примененный коэфф.</label>
+        <label className="rental-form__label">{t("coefficient")}</label>
         <input
           type="text"
           name="coefficient"
@@ -217,7 +219,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
       </div>
 
       <div className="rental-form__row">
-        <label className="rental-form__label">К оплате</label>
+        <label className="rental-form__label">{t("amount_due")}</label>
         <input
           type="text"
           name="amountDue"
@@ -229,18 +231,20 @@ const RentalForm: React.FC<RentalFormProps> = ({
 
       <div className="rental-form__row">
         <div className="rental-form__col">
-          <label className="rental-form__subtitle">Дополнительные услуги</label>
+          <label className="rental-form__subtitle">
+            {t("additional_services")}
+          </label>
           <div className="rental-form__row">
             <input
               type="text"
               name="searchService"
               className="rental-form__input rental-form__input--search"
-              placeholder="Поиск..."
+              placeholder={t("search")}
             />
             <button
               type="button"
               className="btn rental-form__button rental-form__button--search">
-              Найти
+              {t("find")}
             </button>
           </div>
         </div>
@@ -256,7 +260,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
               onChange={handleServiceChange}
               className="rental-form__checkbox"
             />
-            Водитель
+            {t("driver")}
           </label>
           <label className="rental-form__label rental-form__label--checkbox">
             <input
@@ -266,7 +270,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
               onChange={handleServiceChange}
               className="rental-form__checkbox"
             />
-            Трансфер
+            {t("transfer")}
           </label>
           <label className="rental-form__label rental-form__label--checkbox">
             <input
@@ -276,7 +280,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
               onChange={handleServiceChange}
               className="rental-form__checkbox"
             />
-            Детское кресло
+            {t("child_seat")}
           </label>
           <label className="rental-form__label rental-form__label--checkbox">
             <input
@@ -286,7 +290,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
               onChange={handleServiceChange}
               className="rental-form__checkbox"
             />
-            Bluetooth гарнитура
+            {t("bluetooth_headset")}
           </label>
         </div>
       </div>
@@ -295,7 +299,7 @@ const RentalForm: React.FC<RentalFormProps> = ({
         <button
           type="submit"
           className="btn rental-form__button rental-form__button--save">
-          Сохранить
+          {t("save")}
         </button>
       </div>
     </form>

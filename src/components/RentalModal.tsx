@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RentalForm from "./RentalForm";
+import { useTranslation } from "react-i18next";
 
 interface RentalModalProps {
   isOpen: boolean;
@@ -23,6 +24,8 @@ const RentalModal: React.FC<RentalModalProps> = ({
   rent,
   vehicle,
 }) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     pickupDate: new Date(rent.start_date).toISOString().split("T")[0],
     returnDate: new Date(rent.end_date).toISOString().split("T")[0],
@@ -58,8 +61,6 @@ const RentalModal: React.FC<RentalModalProps> = ({
       bluetoothHeadset: false,
     },
   });
-
-  console.log(vehicle);
 
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -111,12 +112,12 @@ const RentalModal: React.FC<RentalModalProps> = ({
       onClick={handleOverlayClick}>
       <div className="modal">
         <div className="modal__header">
-          <h2 className="modal__title">КАРТОЧКА АРЕНДЫ</h2>
+          <h2 className="modal__title">{t("rentalModal.title")}</h2>
           {vehicle ? (
             <h3 className="modal__subtitle">{vehicle.name}</h3>
           ) : (
             <h3 className="modal__subtitle">
-              Информация о транспорте не доступна
+              {t("rentalModal.noVehicleInfo")}
             </h3>
           )}
           <button onClick={onModalClose} className="modal__close-button">
@@ -133,25 +134,25 @@ const RentalModal: React.FC<RentalModalProps> = ({
         <div className="confirm-overlay">
           <div className="confirm-modal">
             <h3 className="confirm-modal__title">
-              Есть несохраненные изменения
+              {t("confirmModal.unsavedChangesTitle")}
             </h3>
             <p className="confirm-modal__text">
-              Вы хотите сохранить изменения?
+              {t("confirmModal.unsavedChangesText")}
             </p>
             <button
               className="btn confirm-modal__button confirm-modal__button--save"
               onClick={() => handleConfirmClose("save")}>
-              Сохранить
+              {t("confirmModal.save")}
             </button>
             <button
               className="btn confirm-modal__button confirm-modal__button--discard"
               onClick={() => handleConfirmClose("discard")}>
-              Выйти без сохранения
+              {t("confirmModal.discard")}
             </button>
             <button
               className="btn confirm-modal__button confirm-modal__button--cancel"
               onClick={() => handleConfirmClose("cancel")}>
-              Отмена
+              {t("confirmModal.cancel")}
             </button>
           </div>
         </div>

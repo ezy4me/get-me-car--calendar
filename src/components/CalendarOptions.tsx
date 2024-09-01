@@ -4,7 +4,9 @@ import { IoOptions, IoSearch, IoCalendar } from "react-icons/io5";
 import { DateRangePicker, StaticRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { ru } from "date-fns/locale";
+import { ru, enUS } from "date-fns/locale";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 interface SortOption {
   value: string;
@@ -20,37 +22,8 @@ interface CalendarOptionsProps {
 }
 
 const customStaticRanges: StaticRange[] = [
-  // {
-  //   label: "Сегодня",
-  //   range: () => ({
-  //     startDate: new Date(),
-  //     endDate: new Date(),
-  //   }),
-  //   isSelected: (range) =>
-  //     isSameDay(range.startDate, new Date()) &&
-  //     isSameDay(range.endDate, new Date()),
-  // },
-  // {
-  //   label: "Вчера",
-  //   range: () => {
-  //     const today = new Date();
-  //     const yesterday = new Date(today.setDate(today.getDate() - 1));
-  //     return {
-  //       startDate: yesterday,
-  //       endDate: yesterday,
-  //     };
-  //   },
-  //   isSelected: (range) => {
-  //     const yesterday = new Date();
-  //     yesterday.setDate(yesterday.getDate() - 1);
-  //     return (
-  //       isSameDay(range.startDate, yesterday) &&
-  //       isSameDay(range.endDate, yesterday)
-  //     );
-  //   },
-  // },
   {
-    label: "Эта неделя",
+    label: "thisWeek",
     range: () => {
       const today = new Date();
       const firstDay = today.getDate() - today.getDay();
@@ -72,29 +45,46 @@ const customStaticRanges: StaticRange[] = [
     },
   },
   {
-    label: "Прошлая неделя",
+    label: "lastWeek",
     range: () => {
       const today = new Date();
-      const firstDay = today.getDate() - today.getDay() - 7;
-      const lastDay = firstDay + 6;
-      const start = new Date(today.setDate(firstDay));
-      const end = new Date(today.setDate(lastDay));
+      const dayOfWeek = today.getDay();
+      const firstDayOfCurrentWeek = new Date(
+        today.setDate(today.getDate() - dayOfWeek)
+      );
+      const startOfLastWeek = new Date(
+        firstDayOfCurrentWeek.setDate(firstDayOfCurrentWeek.getDate() - 7)
+      );
+      const endOfLastWeek = new Date(
+        firstDayOfCurrentWeek.setDate(firstDayOfCurrentWeek.getDate() + 6)
+      );
+
       return {
-        startDate: start,
-        endDate: end,
+        startDate: startOfLastWeek,
+        endDate: endOfLastWeek,
       };
     },
     isSelected: (range) => {
       const today = new Date();
-      const firstDay = today.getDate() - today.getDay() - 7;
-      const lastDay = firstDay + 6;
-      const start = new Date(today.setDate(firstDay));
-      const end = new Date(today.setDate(lastDay));
-      return isSameDay(range.startDate, start) && isSameDay(range.endDate, end);
+      const dayOfWeek = today.getDay();
+      const firstDayOfCurrentWeek = new Date(
+        today.setDate(today.getDate() - dayOfWeek)
+      );
+      const startOfLastWeek = new Date(
+        firstDayOfCurrentWeek.setDate(firstDayOfCurrentWeek.getDate() - 7)
+      );
+      const endOfLastWeek = new Date(
+        firstDayOfCurrentWeek.setDate(firstDayOfCurrentWeek.getDate() + 6)
+      );
+
+      return (
+        isSameDay(range.startDate, startOfLastWeek) &&
+        isSameDay(range.endDate, endOfLastWeek)
+      );
     },
   },
   {
-    label: "Этот месяц",
+    label: "thisMonth",
     range: () => {
       const today = new Date();
       const start = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -112,7 +102,7 @@ const customStaticRanges: StaticRange[] = [
     },
   },
   {
-    label: "Прошлый месяц",
+    label: "lastMonth",
     range: () => {
       const today = new Date();
       const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
@@ -135,6 +125,7 @@ const isSameDay = (date1?: Date, date2?: Date) => {
   if (!date1 || !date2) return false;
   return date1.toDateString() === date2.toDateString();
 };
+
 const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   onSortChange,
   onFilterChange,
@@ -142,6 +133,10 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   onDateRangeChange,
   defaultDateRange,
 }) => {
+  const { t, i18n } = useTranslation();
+
+  const locale = i18n.language === "ru" ? ru : enUS;
+
   const [selectedClassSort, setSelectedClassSort] = useState<SortOption | null>(
     null
   );
@@ -172,16 +167,16 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
   });
 
   const sortOptions: SortOption[] = [
-    { value: "class", label: "Класс транспорта" },
-    { value: "type", label: "Тип транспорта" },
-    { value: "id", label: "Идентификатор транспортного средства" },
-    { value: "nearestBooking", label: "Ближайшее бронирование" },
+    { value: "class", label: t("class") },
+    { value: "type", label: t("type") },
+    { value: "id", label: t("id") },
+    { value: "nearestBooking", label: t("nearestBooking") },
   ];
 
   const filterOptions: SortOption[] = [
-    { value: "all", label: "Все" },
-    { value: "available", label: "Свободные" },
-    { value: "booked", label: "Занятые" },
+    { value: "all", label: t("all") },
+    { value: "available", label: t("available") },
+    { value: "booked", label: t("booked") },
   ];
 
   const handleSortChange =
@@ -307,11 +302,14 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
             {isCalendarOpen && (
               <div className="calendar-dropdown">
                 <DateRangePicker
-                  locale={ru}
+                  locale={locale}
                   ranges={[dateRange]}
                   inputRanges={[]}
                   weekdayDisplayFormat={"EEEEEE"}
-                  staticRanges={customStaticRanges}
+                  staticRanges={customStaticRanges.map((range: any) => ({
+                    ...range,
+                    label: t(range.label),
+                  }))}
                   onChange={handleDateRangeChange}
                   moveRangeOnFirstSelection={false}
                   className="date-range-picker"
@@ -334,7 +332,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
           <div className="search-bar">
             <input
               type="text"
-              placeholder="Поиск транспорта"
+              placeholder={t("search")}
               onChange={handleSearchChange}
             />
             <button className="search-button">
@@ -350,6 +348,8 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
             />
           </div>
 
+          <LanguageSwitcher />
+
           {isDropdownOpen && (
             <div
               className="dropdown-menu"
@@ -361,7 +361,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                   value={selectedFilter}
                   onChange={handleFilterChange}
                   options={filterOptions}
-                  placeholder="Статус ТС"
+                  placeholder={t("status")}
                   isClearable
                 />
                 <Select
@@ -371,7 +371,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                   options={sortOptions.filter(
                     (option) => option.value === "class"
                   )}
-                  placeholder="Класс ТС"
+                  placeholder={t("class")}
                   isClearable
                 />
                 <Select
@@ -381,7 +381,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                   options={sortOptions.filter(
                     (option) => option.value === "type"
                   )}
-                  placeholder="Тип ТС"
+                  placeholder={t("type")}
                   isClearable
                 />
                 <Select
@@ -391,7 +391,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                   options={sortOptions.filter(
                     (option) => option.value === "id"
                   )}
-                  placeholder="ID ТС"
+                  placeholder={t("id")}
                   isClearable
                 />
                 <Select
@@ -401,7 +401,7 @@ const CalendarOptions: React.FC<CalendarOptionsProps> = ({
                   options={sortOptions.filter(
                     (option) => option.value === "nearestBooking"
                   )}
-                  placeholder="Бронирование"
+                  placeholder={t("nearestBooking")}
                   isClearable
                 />
               </div>

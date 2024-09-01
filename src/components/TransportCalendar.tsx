@@ -9,6 +9,7 @@ import {
 import { ReactMouseSelect, TFinishSelectionCallback } from "react-mouse-select";
 import { IoAddCircle } from "react-icons/io5";
 import { Booking } from "../types";
+import { useTranslation } from "react-i18next";
 
 interface TransportCalendarProps {
   vehicals: {
@@ -40,6 +41,8 @@ interface TransportCalendarProps {
 }
 
 const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
+  const { t } = useTranslation();
+
   const [selectedRange, setSelectedRange] = useState<string[]>([]);
   const [selectedRent, setSelectedRent] = useState<any | null>(null);
   const [vehicle, setVehicle] = useState<any | null>(null);
@@ -305,8 +308,8 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
 
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     if (containerRef.current) {
-      containerRef.current.scrollLeft += event.deltaY; // Изменяет горизонтальное скроллирование
-      event.preventDefault(); // Предотвращает стандартное поведение прокрутки
+      containerRef.current.scrollLeft += event.deltaY; // Changes horizontal scrolling
+      event.preventDefault(); // Prevents default scrolling behavior
     }
   };
 
@@ -319,7 +322,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
         <table className="transport-calendar">
           <thead>
             <tr>
-              <th>Транспорт</th>
+              <th>{t("transport")}</th>
               {dates.map((date, index) => (
                 <th
                   key={index}
@@ -370,7 +373,7 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
             ) : (
               <tr>
                 <td className="cell" colSpan={dates.length + 1}>
-                  Нет данных о бронированиях, но машины отображаются
+                  {t("noBookingsData")}
                 </td>
               </tr>
             )}
@@ -378,12 +381,12 @@ const TransportCalendar: React.FC<TransportCalendarProps> = ({ vehicals }) => {
               <td className="cell">
                 <button
                   className="btn cell-btn"
-                  onClick={() => alert("Редирект на форму")}>
-                  Добавить машину
+                  onClick={() => alert(t("addVehicle"))}>
+                  {t("addVehicle")}
                 </button>
                 <button
                   className="btn cell-btn-icon"
-                  onClick={() => alert("Редирект на форму")}>
+                  onClick={() => alert(t("addVehicle"))}>
                   <IoAddCircle size={32} />
                 </button>
               </td>

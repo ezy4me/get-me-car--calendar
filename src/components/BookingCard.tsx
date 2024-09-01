@@ -36,8 +36,8 @@ const BookingCard: React.FC<BookingCardProps> = ({
     rent: any,
     e: React.MouseEvent<HTMLTableRowElement, MouseEvent>
   ) => {
-    e.stopPropagation(); // Останавливаем распространение клика
-    onClick(rent, vehicle); // Вызываем переданный onClick для обработки
+    e.stopPropagation(); 
+    onClick(rent, vehicle); 
   };
 
   return (
